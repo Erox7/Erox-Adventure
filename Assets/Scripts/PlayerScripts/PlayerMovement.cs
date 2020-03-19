@@ -10,7 +10,7 @@ public class PlayerMovement
     private bool rightClickEnd;
     private bool leftClickEnd;
     public Transform playerTransform;
-    private int speed,runningSpeed;
+    private int playerSpeed,runningSpeed,actualSpeed;
 
     public enum MovementDirection
     {
@@ -33,11 +33,13 @@ public class PlayerMovement
         PressedKeyEventManager.current.onDownKeyPress += MoveDown;
         PressedKeyEventManager.current.onLeftKeyPress += MoveLeft;
         PressedKeyEventManager.current.onRightKeyPress += MoveRight;
+        PressedKeyEventManager.current.onSprintKeyPress += Sprint;
 
         PressedKeyEventManager.current.onUpKeyUnPress += StopMovingUp;
         PressedKeyEventManager.current.onDownKeyUnPress += StopMovingDown;
         PressedKeyEventManager.current.onLeftKeyUnPress += StopMovingLeft;
         PressedKeyEventManager.current.onRightKeyUnPress += StopMovingRight;
+        PressedKeyEventManager.current.onSprintKeyUnPress += StopSprint;
     }
 
     public IEnumerator Move() {
@@ -60,18 +62,26 @@ public class PlayerMovement
             {
                 vel += new Vector3(1, 0, 0);
             }
-            playerTransform.position += (vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * speed; //(aixi la velocitat sempre sera constant)
+            playerTransform.position += (vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed; //(aixi la velocitat sempre sera constant)
             vel = Vector3.zero;
             yield return new WaitForEndOfFrame();
         }
     }
-    public void SetSpeed(int newSpeed)
+    public void SetPlayerSpeed(int newSpeed)
     {
-        speed = newSpeed;
+        playerSpeed = newSpeed;
     }
-    public int GetSpeed()
+    public int GetPlayerSpeed()
     {
-        return speed;
+        return playerSpeed;
+    }
+    public void SetActualSpeed(int newSpeed)
+    {
+        actualSpeed = newSpeed;
+    }
+    public int GetActualSpeed()
+    {
+        return actualSpeed;
     }
     public void SetRunningSpeed(int newSpeed)
     {
@@ -98,6 +108,8 @@ public class PlayerMovement
     private void StopMovingDown() { downClickEnd = true; }
     private void StopMovingLeft() { leftClickEnd = true; }
     private void StopMovingRight() { rightClickEnd = true; }
+    private void Sprint() { actualSpeed = runningSpeed; }
+    private void StopSprint() { actualSpeed = playerSpeed; }
 
 
     ~PlayerMovement()
@@ -106,10 +118,13 @@ public class PlayerMovement
         PressedKeyEventManager.current.onDownKeyPress -= MoveDown;
         PressedKeyEventManager.current.onLeftKeyPress -= MoveLeft;
         PressedKeyEventManager.current.onRightKeyPress -= MoveRight;
+        PressedKeyEventManager.current.onSprintKeyPress -= Sprint;
 
         PressedKeyEventManager.current.onUpKeyUnPress -= StopMovingUp;
         PressedKeyEventManager.current.onDownKeyUnPress -= StopMovingDown;
         PressedKeyEventManager.current.onLeftKeyUnPress -= StopMovingLeft;
         PressedKeyEventManager.current.onRightKeyUnPress -= StopMovingRight;
+        PressedKeyEventManager.current.onSprintKeyUnPress -= StopSprint;
+
     }
 }

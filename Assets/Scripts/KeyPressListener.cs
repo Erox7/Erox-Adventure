@@ -24,6 +24,10 @@ public class KeyPressListener : MonoBehaviour
         {
             PressedKeyEventManager.current.LeftKeyPressed();
         }
+        if (Input.GetKeyDown(gameConfig.sprint))
+        {
+            PressedKeyEventManager.current.Sprint();
+        }
 
         if (Input.GetKeyUp(gameConfig.moveUp))
         {
@@ -40,6 +44,10 @@ public class KeyPressListener : MonoBehaviour
         if (Input.GetKeyUp(gameConfig.moveLeft))
         {
             PressedKeyEventManager.current.LeftKeyUnPressed();
+        }
+        if (Input.GetKeyUp(gameConfig.sprint)) 
+        {
+            PressedKeyEventManager.current.StopSprint();
         }
     }
 }

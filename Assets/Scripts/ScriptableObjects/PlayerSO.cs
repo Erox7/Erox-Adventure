@@ -9,5 +9,4 @@ public class PlayerSO : ScriptableObject
     public int attackDamage = default;
     public int speed = default;
     public int runningSpeed = default;
-
 }

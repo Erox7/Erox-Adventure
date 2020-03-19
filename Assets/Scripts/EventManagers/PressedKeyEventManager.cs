@@ -81,4 +81,21 @@ public class PressedKeyEventManager : MonoBehaviour
             onRightKeyUnPress();
         }
     }
+    public event Action onSprintKeyPress;
+    public void Sprint()
+    {
+        if (onSprintKeyPress != null)
+        {
+            onSprintKeyPress();
+        }
+    }
+
+    public event Action onSprintKeyUnPress;
+    public void StopSprint()
+    {
+        if (onSprintKeyUnPress != null)
+        {
+            onSprintKeyUnPress();
+        }
+    }
 }
