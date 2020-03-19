@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement
 {
     private bool upClickEnd;
     private bool downClickEnd;
     private bool rightClickEnd;
     private bool leftClickEnd;
-    public int speed;
+    public Transform playerTransform;
+    private int speed,runningSpeed;
 
     public enum MovementDirection
     {
@@ -18,15 +19,16 @@ public class PlayerMovement : MonoBehaviour
         Left,
         Right
     }
-
+    public PlayerMovement() { }
     // Update is called once per frame
-    private void Start()
+    public PlayerMovement(Transform pTransform)
     {
         upClickEnd = true;
         downClickEnd = true;
         rightClickEnd = true;
         leftClickEnd = true;
 
+        playerTransform = pTransform;
         PressedKeyEventManager.current.onUpKeyPress += MoveUp;
         PressedKeyEventManager.current.onDownKeyPress += MoveDown;
         PressedKeyEventManager.current.onLeftKeyPress += MoveLeft;
@@ -36,11 +38,9 @@ public class PlayerMovement : MonoBehaviour
         PressedKeyEventManager.current.onDownKeyUnPress += StopMovingDown;
         PressedKeyEventManager.current.onLeftKeyUnPress += StopMovingLeft;
         PressedKeyEventManager.current.onRightKeyUnPress += StopMovingRight;
-
-        StartCoroutine(Move());
     }
 
-    private IEnumerator Move() {
+    public IEnumerator Move() {
         Vector3 vel = Vector3.zero;
         while (true)
         {
@@ -60,13 +60,27 @@ public class PlayerMovement : MonoBehaviour
             {
                 vel += new Vector3(1, 0, 0);
             }
-
-            transform.position += (vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * speed; //(aixi la velocitat sempre sera constant)
+            playerTransform.position += (vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * speed; //(aixi la velocitat sempre sera constant)
             vel = Vector3.zero;
             yield return new WaitForEndOfFrame();
         }
     }
-
+    public void SetSpeed(int newSpeed)
+    {
+        speed = newSpeed;
+    }
+    public int GetSpeed()
+    {
+        return speed;
+    }
+    public void SetRunningSpeed(int newSpeed)
+    {
+        runningSpeed = newSpeed;
+    }
+    public int GetRunningSpeed()
+    {
+        return runningSpeed;
+    }
     private void MoveUp() {
         upClickEnd = false;
     }
@@ -85,7 +99,8 @@ public class PlayerMovement : MonoBehaviour
     private void StopMovingLeft() { leftClickEnd = true; }
     private void StopMovingRight() { rightClickEnd = true; }
 
-    public void OnDestroy()
+
+    ~PlayerMovement()
     {
         PressedKeyEventManager.current.onUpKeyPress -= MoveUp;
         PressedKeyEventManager.current.onDownKeyPress -= MoveDown;
