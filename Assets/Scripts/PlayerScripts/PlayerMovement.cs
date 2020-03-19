@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // TODO: El moviment ara mateix només funciona a clicks, he de mirar quan es para de pitjar la tecla.
-    // Start is called before the first frame update
     private bool upClickEnd;
     private bool downClickEnd;
     private bool rightClickEnd;
@@ -24,10 +22,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Start()
     {
-        upClickEnd = false;
-        downClickEnd = false;
-        rightClickEnd = false;
-        leftClickEnd = false;
+        upClickEnd = true;
+        downClickEnd = true;
+        rightClickEnd = true;
+        leftClickEnd = true;
 
         PressedKeyEventManager.current.onUpKeyPress += MoveUp;
         PressedKeyEventManager.current.onDownKeyPress += MoveDown;
@@ -38,66 +36,53 @@ public class PlayerMovement : MonoBehaviour
         PressedKeyEventManager.current.onDownKeyUnPress += StopMovingDown;
         PressedKeyEventManager.current.onLeftKeyUnPress += StopMovingLeft;
         PressedKeyEventManager.current.onRightKeyUnPress += StopMovingRight;
+
+        StartCoroutine(Move());
     }
 
-    private IEnumerator Move(Vector3 movement, MovementDirection direction) {
-
-        switch (direction)
+    private IEnumerator Move() {
+        Vector3 vel = Vector3.zero;
+        while (true)
         {
-            case MovementDirection.Up:
-                while (!upClickEnd)
-                {
-                    transform.Translate(movement);
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            case MovementDirection.Down:
-                while (!downClickEnd)
-                {
-                    transform.Translate(movement);
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            case MovementDirection.Right:
-                while (!rightClickEnd)
-                {
-                    transform.Translate(movement);
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            case MovementDirection.Left:
-                while (!leftClickEnd)
-                {
-                    transform.Translate(movement);
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            default:
-                yield return null;
-                break;
+            if (!upClickEnd)
+{
+                vel += new Vector3(0, 1, 0);
+            }
+            if (!downClickEnd)
+{
+                vel += new Vector3(0, -1, 0);
+            }
+            if (!leftClickEnd)
+            {
+                vel += new Vector3(-1, 0, 0);
+            }
+            if (!rightClickEnd)
+            {
+                vel += new Vector3(1, 0, 0);
+            }
+
+            transform.position += (vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * speed; //(aixi la velocitat sempre sera constant)
+            vel = Vector3.zero;
+            yield return new WaitForEndOfFrame();
         }
     }
 
     private void MoveUp() {
         upClickEnd = false;
-        StartCoroutine(Move(new Vector3(0, 1 * Time.deltaTime * speed, 0), MovementDirection.Up));    
     }
     private void MoveDown() {
         downClickEnd = false;
-        StartCoroutine(Move(new Vector3(0, -1 * Time.deltaTime * speed, 0), MovementDirection.Down));
     }
     private void MoveLeft() {
         leftClickEnd = false;
-        StartCoroutine(Move(new Vector3(-1 * Time.deltaTime * speed, 0, 0), MovementDirection.Left));
     }
     private void MoveRight() {
         rightClickEnd = false;
-        StartCoroutine(Move(new Vector3(1 * Time.deltaTime * speed, 0, 0), MovementDirection.Right));
     }
 
     private void StopMovingUp () { upClickEnd = true; }
     private void StopMovingDown() { downClickEnd = true; }
-    private void StopMovingLeft() { leftClickEnd= true; }
+    private void StopMovingLeft() { leftClickEnd = true; }
     private void StopMovingRight() { rightClickEnd = true; }
 
     public void OnDestroy()

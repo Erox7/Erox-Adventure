@@ -71,6 +71,7 @@ public class PressedKeyEventManager : MonoBehaviour
         {
             onLeftKeyUnPress();
         }
+        //onLeftKeyUnPress?.Invoke();
     }
     public event Action onRightKeyUnPress;
     public void RightKeyUnPressed()
