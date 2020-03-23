@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Erox", menuName = "Player")]
 public class PlayerSO : ScriptableObject
 {
-    public float hp;
-    public int attackDamage;
-    public float speed;
+    public float hp = default;
+    public int attackDamage = default;
+    public int speed = default;
+    public int runningSpeed = default;
 }

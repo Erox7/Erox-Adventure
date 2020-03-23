@@ -71,6 +71,7 @@ public class PressedKeyEventManager : MonoBehaviour
         {
             onLeftKeyUnPress();
         }
+        //onLeftKeyUnPress?.Invoke();
     }
     public event Action onRightKeyUnPress;
     public void RightKeyUnPressed()
@@ -78,6 +79,23 @@ public class PressedKeyEventManager : MonoBehaviour
         if (onRightKeyUnPress != null)
         {
             onRightKeyUnPress();
+        }
+    }
+    public event Action onSprintKeyPress;
+    public void Sprint()
+    {
+        if (onSprintKeyPress != null)
+        {
+            onSprintKeyPress();
+        }
+    }
+
+    public event Action onSprintKeyUnPress;
+    public void StopSprint()
+    {
+        if (onSprintKeyUnPress != null)
+        {
+            onSprintKeyUnPress();
         }
     }
 }

@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement
 {
-    // TODO: El moviment ara mateix només funciona a clicks, he de mirar quan es para de pitjar la tecla.
-    // Start is called before the first frame update
     private bool upClickEnd;
     private bool downClickEnd;
     private bool rightClickEnd;
     private bool leftClickEnd;
-    public int speed;
+    public Transform playerTransform;
+    private int playerSpeed,runningSpeed,actualSpeed;
 
     public enum MovementDirection
     {
@@ -20,96 +19,112 @@ public class PlayerMovement : MonoBehaviour
         Left,
         Right
     }
-
+    public PlayerMovement() { }
     // Update is called once per frame
-    private void Start()
+    public PlayerMovement(Transform pTransform)
     {
-        upClickEnd = false;
-        downClickEnd = false;
-        rightClickEnd = false;
-        leftClickEnd = false;
+        upClickEnd = true;
+        downClickEnd = true;
+        rightClickEnd = true;
+        leftClickEnd = true;
 
+        playerTransform = pTransform;
         PressedKeyEventManager.current.onUpKeyPress += MoveUp;
         PressedKeyEventManager.current.onDownKeyPress += MoveDown;
         PressedKeyEventManager.current.onLeftKeyPress += MoveLeft;
         PressedKeyEventManager.current.onRightKeyPress += MoveRight;
+        PressedKeyEventManager.current.onSprintKeyPress += Sprint;
 
         PressedKeyEventManager.current.onUpKeyUnPress += StopMovingUp;
         PressedKeyEventManager.current.onDownKeyUnPress += StopMovingDown;
         PressedKeyEventManager.current.onLeftKeyUnPress += StopMovingLeft;
         PressedKeyEventManager.current.onRightKeyUnPress += StopMovingRight;
+        PressedKeyEventManager.current.onSprintKeyUnPress += StopSprint;
     }
 
-    private IEnumerator Move(Vector3 movement, MovementDirection direction) {
-
-        switch (direction)
+    public IEnumerator Move() {
+        Vector3 vel = Vector3.zero;
+        while (true)
         {
-            case MovementDirection.Up:
-                while (!upClickEnd)
-                {
-                    transform.Translate(movement);
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            case MovementDirection.Down:
-                while (!downClickEnd)
-                {
-                    transform.Translate(movement);
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            case MovementDirection.Right:
-                while (!rightClickEnd)
-                {
-                    transform.Translate(movement);
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            case MovementDirection.Left:
-                while (!leftClickEnd)
-                {
-                    transform.Translate(movement);
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            default:
-                yield return null;
-                break;
+            if (!upClickEnd)
+{
+                vel += new Vector3(0, 1, 0);
+            }
+            if (!downClickEnd)
+{
+                vel += new Vector3(0, -1, 0);
+            }
+            if (!leftClickEnd)
+            {
+                vel += new Vector3(-1, 0, 0);
+            }
+            if (!rightClickEnd)
+            {
+                vel += new Vector3(1, 0, 0);
+            }
+            playerTransform.position += (vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed; //(aixi la velocitat sempre sera constant)
+            vel = Vector3.zero;
+            yield return new WaitForEndOfFrame();
         }
     }
-
+    public void SetPlayerSpeed(int newSpeed)
+    {
+        playerSpeed = newSpeed;
+    }
+    public int GetPlayerSpeed()
+    {
+        return playerSpeed;
+    }
+    public void SetActualSpeed(int newSpeed)
+    {
+        actualSpeed = newSpeed;
+    }
+    public int GetActualSpeed()
+    {
+        return actualSpeed;
+    }
+    public void SetRunningSpeed(int newSpeed)
+    {
+        runningSpeed = newSpeed;
+    }
+    public int GetRunningSpeed()
+    {
+        return runningSpeed;
+    }
     private void MoveUp() {
         upClickEnd = false;
-        StartCoroutine(Move(new Vector3(0, 1 * Time.deltaTime * speed, 0), MovementDirection.Up));    
     }
     private void MoveDown() {
         downClickEnd = false;
-        StartCoroutine(Move(new Vector3(0, -1 * Time.deltaTime * speed, 0), MovementDirection.Down));
     }
     private void MoveLeft() {
         leftClickEnd = false;
-        StartCoroutine(Move(new Vector3(-1 * Time.deltaTime * speed, 0, 0), MovementDirection.Left));
     }
     private void MoveRight() {
         rightClickEnd = false;
-        StartCoroutine(Move(new Vector3(1 * Time.deltaTime * speed, 0, 0), MovementDirection.Right));
     }
 
     private void StopMovingUp () { upClickEnd = true; }
     private void StopMovingDown() { downClickEnd = true; }
-    private void StopMovingLeft() { leftClickEnd= true; }
+    private void StopMovingLeft() { leftClickEnd = true; }
     private void StopMovingRight() { rightClickEnd = true; }
+    private void Sprint() { actualSpeed = runningSpeed; }
+    private void StopSprint() { actualSpeed = playerSpeed; }
 
-    public void OnDestroy()
+
+    ~PlayerMovement()
     {
         PressedKeyEventManager.current.onUpKeyPress -= MoveUp;
         PressedKeyEventManager.current.onDownKeyPress -= MoveDown;
         PressedKeyEventManager.current.onLeftKeyPress -= MoveLeft;
         PressedKeyEventManager.current.onRightKeyPress -= MoveRight;
+        PressedKeyEventManager.current.onSprintKeyPress -= Sprint;
 
         PressedKeyEventManager.current.onUpKeyUnPress -= StopMovingUp;
         PressedKeyEventManager.current.onDownKeyUnPress -= StopMovingDown;
         PressedKeyEventManager.current.onLeftKeyUnPress -= StopMovingLeft;
         PressedKeyEventManager.current.onRightKeyUnPress -= StopMovingRight;
+        PressedKeyEventManager.current.onSprintKeyUnPress -= StopSprint;
+
     }
 }
