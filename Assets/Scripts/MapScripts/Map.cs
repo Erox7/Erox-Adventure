@@ -7,12 +7,12 @@ public class Map : MonoBehaviour
 {
 
     public GameObject invalidPositionsGO;
-    public static Dictionary<Vector3, bool> mapPositions;
+    public static List<Vector3> invalidPositions = new List<Vector3>();
+
     // Start is called before the first frame update
     void Start()
     {
         Tilemap collisionTileMap = invalidPositionsGO.GetComponent<Tilemap>();
-        mapPositions = new Dictionary<Vector3, bool>();
         InitializeInvalidPositions(collisionTileMap);
     }
     private void InitializeInvalidPositions(Tilemap collisionTileMap)
@@ -30,9 +30,13 @@ public class Map : MonoBehaviour
                 TileBase tb = collisionTileMap.GetTile(cellPosition);
                 if (tb != null || tb != default)
                 {
-                    mapPositions.Add(position, true);
+                    invalidPositions.Add(position);
                 } 
             }
+        }
+        foreach (Vector3 position in invalidPositions)
+        {
+            Debug.Log(position);
         }
     }
     // Update is called once per frame

@@ -15,6 +15,7 @@ namespace Player {
             playerMovement.SetPlayerSpeed(player.speed);
             playerMovement.SetActualSpeed(player.speed);
             playerMovement.SetRunningSpeed(player.runningSpeed);
+            new WaitForEndOfFrame();
             StartCoroutine(playerMovement.Move());
         }
 

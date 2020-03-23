@@ -62,7 +62,13 @@ public class PlayerMovement
             {
                 vel += new Vector3(1, 0, 0);
             }
-            playerTransform.position += (vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed; //(aixi la velocitat sempre sera constant)
+
+            Vector3 newPosition = playerTransform.position +((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed); //(aixi la velocitat sempre sera constant)
+            if (!Map.invalidPositions.Contains(newPosition))
+            {
+                playerTransform.position = newPosition;
+            }
+
             vel = Vector3.zero;
             yield return new WaitForEndOfFrame();
         }
