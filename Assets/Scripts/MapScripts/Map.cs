@@ -7,6 +7,7 @@ public class Map : MonoBehaviour
 {
 
     public GameObject invalidPositionsGO;
+    public GameObject portalPositionsGO;
     public static List<Vector3Int> invalidPositions = new List<Vector3Int>();
 
     // Start is called before the first frame update
@@ -31,6 +32,7 @@ public class Map : MonoBehaviour
                 if (tb != null || tb != default)
                 {
                     invalidPositions.Add(cellPosition);
+                    //tb.name
                 } 
             }
         }
