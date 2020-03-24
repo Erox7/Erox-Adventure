@@ -7,7 +7,7 @@ public class Map : MonoBehaviour
 {
 
     public GameObject invalidPositionsGO;
-    public static List<Vector3> invalidPositions = new List<Vector3>();
+    public static List<Vector3Int> invalidPositions = new List<Vector3Int>();
 
     // Start is called before the first frame update
     void Start()
@@ -30,13 +30,9 @@ public class Map : MonoBehaviour
                 TileBase tb = collisionTileMap.GetTile(cellPosition);
                 if (tb != null || tb != default)
                 {
-                    invalidPositions.Add(position);
+                    invalidPositions.Add(cellPosition);
                 } 
             }
-        }
-        foreach (Vector3 position in invalidPositions)
-        {
-            Debug.Log(position);
         }
     }
     // Update is called once per frame

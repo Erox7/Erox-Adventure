@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 
 public class PlayerMovement
@@ -11,7 +12,7 @@ public class PlayerMovement
     private bool leftClickEnd;
     public Transform playerTransform;
     private int playerSpeed,runningSpeed,actualSpeed;
-
+    private GridLayout gl;
     public enum MovementDirection
     {
         Up,
@@ -27,7 +28,7 @@ public class PlayerMovement
         downClickEnd = true;
         rightClickEnd = true;
         leftClickEnd = true;
-
+        gl = GameObject.Find("Map").GetComponentInChildren<Tilemap>().layoutGrid;
         playerTransform = pTransform;
         PressedKeyEventManager.current.onUpKeyPress += MoveUp;
         PressedKeyEventManager.current.onDownKeyPress += MoveDown;
@@ -62,9 +63,10 @@ public class PlayerMovement
             {
                 vel += new Vector3(1, 0, 0);
             }
-
-            Vector3 newPosition = playerTransform.position +((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed); //(aixi la velocitat sempre sera constant)
-            if (!Map.invalidPositions.Contains(newPosition))
+            Vector3 newPosition = playerTransform.position + ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
+            Vector3 offsetPosition = newPosition + new Vector3(0, -0.5f, 0);
+            Vector3Int cellPosition = gl.WorldToCell(offsetPosition);
+            if (!Map.invalidPositions.Contains(cellPosition))
             {
                 playerTransform.position = newPosition;
             }
