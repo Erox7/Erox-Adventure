@@ -51,15 +51,15 @@ public class PlayerMovement
 {
                 vel += new Vector3(0, 1, 0);
             }
-            if (!downClickEnd)
+            else if (!downClickEnd)
 {
                 vel += new Vector3(0, -1, 0);
             }
-            if (!leftClickEnd)
+            else if (!leftClickEnd)
             {
                 vel += new Vector3(-1, 0, 0);
             }
-            if (!rightClickEnd)
+            else if (!rightClickEnd)
             {
                 vel += new Vector3(1, 0, 0);
             }
