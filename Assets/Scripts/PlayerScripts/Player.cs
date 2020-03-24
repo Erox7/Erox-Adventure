@@ -10,11 +10,12 @@ namespace Player {
         // Start is called before the first frame update
         void Start()
         {
-            transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y - 0.5f, transform.position.z);
             playerMovement = new PlayerMovement(transform);
             playerMovement.SetPlayerSpeed(player.speed);
             playerMovement.SetActualSpeed(player.speed);
             playerMovement.SetRunningSpeed(player.runningSpeed);
+            new WaitForEndOfFrame();
             StartCoroutine(playerMovement.Move());
         }
 
