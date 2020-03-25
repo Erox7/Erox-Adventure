@@ -13,6 +13,7 @@ public class PlayerMovement
     public Transform playerTransform;
     private int playerSpeed,runningSpeed,actualSpeed;
     private GridLayout gl;
+    private Vector3 movement;
     public enum MovementDirection
     {
         Up,
@@ -28,6 +29,7 @@ public class PlayerMovement
         downClickEnd = true;
         rightClickEnd = true;
         leftClickEnd = true;
+        movement = new Vector3();
         gl = GameObject.Find("Map").GetComponentInChildren<Tilemap>().layoutGrid;
         playerTransform = pTransform;
         PressedKeyEventManager.current.onUpKeyPress += MoveUp;
@@ -63,12 +65,12 @@ public class PlayerMovement
             {
                 vel += new Vector3(1, 0, 0);
             }
-            Vector3 newPosition = playerTransform.position + ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
-            Vector3 offsetPosition = newPosition + new Vector3(0, -0.5f, 0);
-            Vector3Int cellPosition = gl.WorldToCell(offsetPosition);
+            movement = ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
+            Vector3Int cellPosition = gl.WorldToCell(playerTransform.position + movement + new Vector3(0, -0.5f, 0));
             if (!Map.invalidPositions.Contains(cellPosition))
             {
-                playerTransform.position = newPosition;
+                //playerTransform.position = newPosition;
+                playerTransform.Translate(movement);
             }
 
             vel = Vector3.zero;
