@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class Map : MonoBehaviour
 {
-
+    public int id;
     public GameObject invalidPositionsGO;
     public GameObject portalPositionsGO;
     public static List<Vector3Int> invalidPositions = new List<Vector3Int>();
