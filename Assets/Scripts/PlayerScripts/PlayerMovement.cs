@@ -22,7 +22,6 @@ public class PlayerMovement
         Right
     }
     public PlayerMovement() { }
-    // Update is called once per frame
     public PlayerMovement(Transform pTransform)
     {
         upClickEnd = true;
@@ -32,17 +31,17 @@ public class PlayerMovement
         movement = new Vector3();
         gl = GameObject.Find("Map").GetComponentInChildren<Tilemap>().layoutGrid;
         playerTransform = pTransform;
-        PressedKeyEventManager.current.onUpKeyPress += MoveUp;
-        PressedKeyEventManager.current.onDownKeyPress += MoveDown;
-        PressedKeyEventManager.current.onLeftKeyPress += MoveLeft;
-        PressedKeyEventManager.current.onRightKeyPress += MoveRight;
-        PressedKeyEventManager.current.onSprintKeyPress += Sprint;
+        PressedKeyEventManager.Instance.onUpKeyPress += MoveUp;
+        PressedKeyEventManager.Instance.onDownKeyPress += MoveDown;
+        PressedKeyEventManager.Instance.onLeftKeyPress += MoveLeft;
+        PressedKeyEventManager.Instance.onRightKeyPress += MoveRight;
+        PressedKeyEventManager.Instance.onSprintKeyPress += Sprint;
 
-        PressedKeyEventManager.current.onUpKeyUnPress += StopMovingUp;
-        PressedKeyEventManager.current.onDownKeyUnPress += StopMovingDown;
-        PressedKeyEventManager.current.onLeftKeyUnPress += StopMovingLeft;
-        PressedKeyEventManager.current.onRightKeyUnPress += StopMovingRight;
-        PressedKeyEventManager.current.onSprintKeyUnPress += StopSprint;
+        PressedKeyEventManager.Instance.onUpKeyUnPress += StopMovingUp;
+        PressedKeyEventManager.Instance.onDownKeyUnPress += StopMovingDown;
+        PressedKeyEventManager.Instance.onLeftKeyUnPress += StopMovingLeft;
+        PressedKeyEventManager.Instance.onRightKeyUnPress += StopMovingRight;
+        PressedKeyEventManager.Instance.onSprintKeyUnPress += StopSprint;
     }
 
     public IEnumerator Move() {
@@ -67,10 +66,14 @@ public class PlayerMovement
             }
             movement = ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
             Vector3Int cellPosition = gl.WorldToCell(playerTransform.position + movement + new Vector3(0, -0.5f, 0));
-            if (!Map.invalidPositions.Contains(cellPosition))
+            if (!MapController.invalidPositions.Contains(cellPosition))
             {
                 //playerTransform.position = newPosition;
                 playerTransform.Translate(movement);
+            }
+            if (!MapController.portals.Contains(cellPosition))
+            {
+
             }
 
             vel = Vector3.zero;
@@ -124,17 +127,17 @@ public class PlayerMovement
 
     ~PlayerMovement()
     {
-        PressedKeyEventManager.current.onUpKeyPress -= MoveUp;
-        PressedKeyEventManager.current.onDownKeyPress -= MoveDown;
-        PressedKeyEventManager.current.onLeftKeyPress -= MoveLeft;
-        PressedKeyEventManager.current.onRightKeyPress -= MoveRight;
-        PressedKeyEventManager.current.onSprintKeyPress -= Sprint;
+        PressedKeyEventManager.Instance.onUpKeyPress -= MoveUp;
+        PressedKeyEventManager.Instance.onDownKeyPress -= MoveDown;
+        PressedKeyEventManager.Instance.onLeftKeyPress -= MoveLeft;
+        PressedKeyEventManager.Instance.onRightKeyPress -= MoveRight;
+        PressedKeyEventManager.Instance.onSprintKeyPress -= Sprint;
 
-        PressedKeyEventManager.current.onUpKeyUnPress -= StopMovingUp;
-        PressedKeyEventManager.current.onDownKeyUnPress -= StopMovingDown;
-        PressedKeyEventManager.current.onLeftKeyUnPress -= StopMovingLeft;
-        PressedKeyEventManager.current.onRightKeyUnPress -= StopMovingRight;
-        PressedKeyEventManager.current.onSprintKeyUnPress -= StopSprint;
+        PressedKeyEventManager.Instance.onUpKeyUnPress -= StopMovingUp;
+        PressedKeyEventManager.Instance.onDownKeyUnPress -= StopMovingDown;
+        PressedKeyEventManager.Instance.onLeftKeyUnPress -= StopMovingLeft;
+        PressedKeyEventManager.Instance.onRightKeyUnPress -= StopMovingRight;
+        PressedKeyEventManager.Instance.onSprintKeyUnPress -= StopSprint;
 
     }
 }
