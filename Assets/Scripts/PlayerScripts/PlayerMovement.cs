@@ -29,7 +29,7 @@ public class PlayerMovement
         rightClickEnd = true;
         leftClickEnd = true;
         movement = new Vector3();
-        gl = GameObject.Find("Map").GetComponentInChildren<Tilemap>().layoutGrid;
+        gl = GameObject.Find("TestMap_1").GetComponentInChildren<Tilemap>().layoutGrid;
         playerTransform = pTransform;
         PressedKeyEventManager.Instance.onUpKeyPress += MoveUp;
         PressedKeyEventManager.Instance.onDownKeyPress += MoveDown;
@@ -71,9 +71,9 @@ public class PlayerMovement
                 //playerTransform.position = newPosition;
                 playerTransform.Translate(movement);
             }
-            if (!MapController.portals.Contains(cellPosition))
+            if (MapController.portals.Contains(cellPosition))
             {
-
+                GlobalEventManager.Instance.MapChange(1);
             }
 
             vel = Vector3.zero;

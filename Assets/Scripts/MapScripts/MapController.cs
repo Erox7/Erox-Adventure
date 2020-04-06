@@ -9,4 +9,20 @@ public class MapController : MonoBehaviour
 
     public List<GameObject> maps;
 
+    public void Start()
+    {
+        GlobalEventManager.Instance.onMapChange += ChargeNewMap;
+    }
+
+    public void ChargeNewMap(int mapId)
+    {
+        GameObject go = maps[mapId];
+        Instantiate(go, go.transform.position, go.transform.rotation);
+    }
+
+    public void onDestroy()
+    {
+        GlobalEventManager.Instance.onMapChange -= ChargeNewMap;
+    }
+
 }

@@ -21,25 +21,23 @@ public class Map : MonoBehaviour
 
     private void InitializePortals(Tilemap portalTileMap)
     {
-    GridLayout gl = portalTileMap.layoutGrid;
-    Vector3 origin = portalTileMap.origin;
-    Vector3 size = portalTileMap.size;
+        GridLayout gl = portalTileMap.layoutGrid;
+        Vector3 origin = portalTileMap.origin;
+        Vector3 size = portalTileMap.size;
 
-    for (int rows = (int)origin.x; rows < (int)(origin.x + size.x); rows++)
-    {
-        for (int cols = (int)origin.y; cols < (int)(origin.y + size.y); cols++)
+        for (int rows = (int)origin.x; rows < (int)(origin.x + size.x); rows++)
         {
-            Vector3 position = new Vector3(rows, cols, 0);
-            Vector3Int cellPosition = gl.WorldToCell(position);
-            TileBase tb = portalTileMap.GetTile(cellPosition);
-            if ((tb != null || tb != default) && !MapController.portals.Contains(cellPosition))
+            for (int cols = (int)origin.y; cols < (int)(origin.y + size.y); cols++)
             {
-                MapController.portals.Add(cellPosition);
-                //tb.name
+                Vector3 position = new Vector3(rows, cols, 0);
+                Vector3Int cellPosition = gl.WorldToCell(position);
+                TileBase tb = portalTileMap.GetTile(cellPosition);
+                if ((tb != null || tb != default) && !MapController.portals.Contains(cellPosition))
+                {
+                    MapController.portals.Add(cellPosition);
+                }
             }
         }
-    }
-        throw new NotImplementedException();
     }
 
     private void InitializeInvalidPositions(Tilemap collisionTileMap)
@@ -58,7 +56,6 @@ public class Map : MonoBehaviour
                 if ((tb != null || tb != default) && !MapController.invalidPositions.Contains(cellPosition))
                 {
                     MapController.invalidPositions.Add(cellPosition);
-                    //tb.name
                 } 
             }
         }
