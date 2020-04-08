@@ -13,6 +13,7 @@ public class PlayerMovement
     public Transform playerTransform;
     private int playerSpeed,runningSpeed,actualSpeed;
     private GridLayout gl;
+    private Vector3 movement;
     public enum MovementDirection
     {
         Up,
@@ -21,57 +22,63 @@ public class PlayerMovement
         Right
     }
     public PlayerMovement() { }
-    // Update is called once per frame
     public PlayerMovement(Transform pTransform)
     {
         upClickEnd = true;
         downClickEnd = true;
         rightClickEnd = true;
         leftClickEnd = true;
-        gl = GameObject.Find("Map").GetComponentInChildren<Tilemap>().layoutGrid;
+        movement = new Vector3();
         playerTransform = pTransform;
-        PressedKeyEventManager.current.onUpKeyPress += MoveUp;
-        PressedKeyEventManager.current.onDownKeyPress += MoveDown;
-        PressedKeyEventManager.current.onLeftKeyPress += MoveLeft;
-        PressedKeyEventManager.current.onRightKeyPress += MoveRight;
-        PressedKeyEventManager.current.onSprintKeyPress += Sprint;
+        PressedKeyEventManager.Instance.onUpKeyPress += MoveUp;
+        PressedKeyEventManager.Instance.onDownKeyPress += MoveDown;
+        PressedKeyEventManager.Instance.onLeftKeyPress += MoveLeft;
+        PressedKeyEventManager.Instance.onRightKeyPress += MoveRight;
+        PressedKeyEventManager.Instance.onSprintKeyPress += Sprint;
 
-        PressedKeyEventManager.current.onUpKeyUnPress += StopMovingUp;
-        PressedKeyEventManager.current.onDownKeyUnPress += StopMovingDown;
-        PressedKeyEventManager.current.onLeftKeyUnPress += StopMovingLeft;
-        PressedKeyEventManager.current.onRightKeyUnPress += StopMovingRight;
-        PressedKeyEventManager.current.onSprintKeyUnPress += StopSprint;
+        PressedKeyEventManager.Instance.onUpKeyUnPress += StopMovingUp;
+        PressedKeyEventManager.Instance.onDownKeyUnPress += StopMovingDown;
+        PressedKeyEventManager.Instance.onLeftKeyUnPress += StopMovingLeft;
+        PressedKeyEventManager.Instance.onRightKeyUnPress += StopMovingRight;
+        PressedKeyEventManager.Instance.onSprintKeyUnPress += StopSprint;
+
+        GlobalEventManager.Instance.onMapChanged += updateGrid;
     }
 
     public IEnumerator Move() {
         Vector3 vel = Vector3.zero;
-        while (true)
+        while (true )
         {
-            if (!upClickEnd)
-{
-                vel += new Vector3(0, 1, 0);
-            }
-            if (!downClickEnd)
-{
-                vel += new Vector3(0, -1, 0);
-            }
-            if (!leftClickEnd)
-            {
-                vel += new Vector3(-1, 0, 0);
-            }
-            if (!rightClickEnd)
-            {
-                vel += new Vector3(1, 0, 0);
-            }
-            Vector3 newPosition = playerTransform.position + ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
-            Vector3 offsetPosition = newPosition + new Vector3(0, -0.5f, 0);
-            Vector3Int cellPosition = gl.WorldToCell(offsetPosition);
-            if (!Map.invalidPositions.Contains(cellPosition))
-            {
-                playerTransform.position = newPosition;
-            }
+            if((gl != null || gl != default)) { 
+                if (!upClickEnd)
+    {
+                    vel += new Vector3(0, 1, 0);
+                }
+                else if (!downClickEnd)
+    {
+                    vel += new Vector3(0, -1, 0);
+                }
+                else if (!leftClickEnd)
+                {
+                    vel += new Vector3(-1, 0, 0);
+                }
+                else if (!rightClickEnd)
+                {
+                    vel += new Vector3(1, 0, 0);
+                }
+                movement = ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
+                Vector3Int cellPosition = gl.WorldToCell(playerTransform.position + movement + new Vector3(0, -0.5f, 0));
+                if (!MapController.invalidPositions.Contains(cellPosition))
+                {
+                    playerTransform.Translate(movement);
+                }
+                if (MapController.portals.ContainsKey(cellPosition))
+                {
+                    GlobalEventManager.Instance.MapChange(MapController.portals[cellPosition]);
+                }
 
-            vel = Vector3.zero;
+                vel = Vector3.zero;
+            }
             yield return new WaitForEndOfFrame();
         }
     }
@@ -99,6 +106,11 @@ public class PlayerMovement
     {
         return runningSpeed;
     }
+
+    private void updateGrid()
+    {
+        gl = MapController.currentMap.GetComponent<Grid>();
+    }
     private void MoveUp() {
         upClickEnd = false;
     }
@@ -122,17 +134,19 @@ public class PlayerMovement
 
     ~PlayerMovement()
     {
-        PressedKeyEventManager.current.onUpKeyPress -= MoveUp;
-        PressedKeyEventManager.current.onDownKeyPress -= MoveDown;
-        PressedKeyEventManager.current.onLeftKeyPress -= MoveLeft;
-        PressedKeyEventManager.current.onRightKeyPress -= MoveRight;
-        PressedKeyEventManager.current.onSprintKeyPress -= Sprint;
+        PressedKeyEventManager.Instance.onUpKeyPress -= MoveUp;
+        PressedKeyEventManager.Instance.onDownKeyPress -= MoveDown;
+        PressedKeyEventManager.Instance.onLeftKeyPress -= MoveLeft;
+        PressedKeyEventManager.Instance.onRightKeyPress -= MoveRight;
+        PressedKeyEventManager.Instance.onSprintKeyPress -= Sprint;
 
-        PressedKeyEventManager.current.onUpKeyUnPress -= StopMovingUp;
-        PressedKeyEventManager.current.onDownKeyUnPress -= StopMovingDown;
-        PressedKeyEventManager.current.onLeftKeyUnPress -= StopMovingLeft;
-        PressedKeyEventManager.current.onRightKeyUnPress -= StopMovingRight;
-        PressedKeyEventManager.current.onSprintKeyUnPress -= StopSprint;
+        PressedKeyEventManager.Instance.onUpKeyUnPress -= StopMovingUp;
+        PressedKeyEventManager.Instance.onDownKeyUnPress -= StopMovingDown;
+        PressedKeyEventManager.Instance.onLeftKeyUnPress -= StopMovingLeft;
+        PressedKeyEventManager.Instance.onRightKeyUnPress -= StopMovingRight;
+        PressedKeyEventManager.Instance.onSprintKeyUnPress -= StopSprint;
+
+        GlobalEventManager.Instance.onMapChanged -= updateGrid;
 
     }
 }

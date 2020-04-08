@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class PressedKeyEventManager : MonoBehaviour
 {
-    public static PressedKeyEventManager current;
+    public static PressedKeyEventManager Instance => _instance;
+    private static PressedKeyEventManager _instance;
     // Start is called before the first frame update
     void Awake()
     {
-        current = this;
+        if (_instance != null || _instance != this)
+        {
+            Destroy(this);
+        }
+        _instance = this;
+        DontDestroyOnLoad(this);
     }
 
     public event Action onUpKeyPress;
