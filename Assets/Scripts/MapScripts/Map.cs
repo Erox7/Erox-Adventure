@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 public class Map : MonoBehaviour
 {
     public int id;
+    public Vector3 initialCharacterPosition;
     public GameObject invalidPositionsGO;
     public GameObject portalPositionsGO;
 
@@ -33,9 +34,9 @@ public class Map : MonoBehaviour
                 Vector3 position = new Vector3(rows, cols, 0);
                 Vector3Int cellPosition = gl.WorldToCell(position);
                 TileBase tb = portalTileMap.GetTile(cellPosition);
-                if ((tb != null || tb != default) && !MapController.portals.Contains(cellPosition))
+                if ((tb != null || tb != default) && !MapController.portals.ContainsKey(cellPosition))
                 {
-                    MapController.portals.Add(cellPosition);
+                    MapController.portals.Add(cellPosition, Int32.Parse(tb.name));
                 }
             }
         }

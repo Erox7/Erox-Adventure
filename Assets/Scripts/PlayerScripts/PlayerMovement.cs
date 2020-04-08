@@ -72,9 +72,9 @@ public class PlayerMovement
                 {
                     playerTransform.Translate(movement);
                 }
-                if (MapController.portals.Contains(cellPosition))
+                if (MapController.portals.ContainsKey(cellPosition))
                 {
-                    GlobalEventManager.Instance.MapChange(1);
+                    GlobalEventManager.Instance.MapChange(MapController.portals[cellPosition]);
                 }
 
                 vel = Vector3.zero;

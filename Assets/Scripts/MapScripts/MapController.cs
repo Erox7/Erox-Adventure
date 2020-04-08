@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapController : MonoBehaviour
 {
     public static List<Vector3Int> invalidPositions = new List<Vector3Int>();
-    public static List<Vector3Int> portals = new List<Vector3Int>();
+    public static Dictionary<Vector3Int,int> portals = new Dictionary<Vector3Int, int>();
     public static GameObject currentMap;
     public GameObject player;
 
@@ -20,12 +20,9 @@ public class MapController : MonoBehaviour
     public void ChargeNewMap(int mapId)
     {
         GameObject go = maps[mapId];
-        if (mapId == 1)
-        {        
-            player.transform.position = new Vector3(24, 0, 0);
-        } else
+        if (go != null || go != default)
         {
-            player.transform.position = new Vector3(0, 0, 0);
+            player.transform.position = go.GetComponent<Map>().initialCharacterPosition;
         }
         if (currentMap != null || currentMap != default)
         {
