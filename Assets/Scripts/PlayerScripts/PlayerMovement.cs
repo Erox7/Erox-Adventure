@@ -29,7 +29,6 @@ public class PlayerMovement
         rightClickEnd = true;
         leftClickEnd = true;
         movement = new Vector3();
-        gl = GameObject.Find("TestMap_1").GetComponentInChildren<Tilemap>().layoutGrid;
         playerTransform = pTransform;
         PressedKeyEventManager.Instance.onUpKeyPress += MoveUp;
         PressedKeyEventManager.Instance.onDownKeyPress += MoveDown;
@@ -42,41 +41,44 @@ public class PlayerMovement
         PressedKeyEventManager.Instance.onLeftKeyUnPress += StopMovingLeft;
         PressedKeyEventManager.Instance.onRightKeyUnPress += StopMovingRight;
         PressedKeyEventManager.Instance.onSprintKeyUnPress += StopSprint;
+
+        GlobalEventManager.Instance.onMapChanged += updateGrid;
     }
 
     public IEnumerator Move() {
         Vector3 vel = Vector3.zero;
-        while (true)
+        while (true )
         {
-            if (!upClickEnd)
-{
-                vel += new Vector3(0, 1, 0);
-            }
-            else if (!downClickEnd)
-{
-                vel += new Vector3(0, -1, 0);
-            }
-            else if (!leftClickEnd)
-            {
-                vel += new Vector3(-1, 0, 0);
-            }
-            else if (!rightClickEnd)
-            {
-                vel += new Vector3(1, 0, 0);
-            }
-            movement = ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
-            Vector3Int cellPosition = gl.WorldToCell(playerTransform.position + movement + new Vector3(0, -0.5f, 0));
-            if (!MapController.invalidPositions.Contains(cellPosition))
-            {
-                //playerTransform.position = newPosition;
-                playerTransform.Translate(movement);
-            }
-            if (MapController.portals.Contains(cellPosition))
-            {
-                GlobalEventManager.Instance.MapChange(1);
-            }
+            if((gl != null || gl != default)) { 
+                if (!upClickEnd)
+    {
+                    vel += new Vector3(0, 1, 0);
+                }
+                else if (!downClickEnd)
+    {
+                    vel += new Vector3(0, -1, 0);
+                }
+                else if (!leftClickEnd)
+                {
+                    vel += new Vector3(-1, 0, 0);
+                }
+                else if (!rightClickEnd)
+                {
+                    vel += new Vector3(1, 0, 0);
+                }
+                movement = ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
+                Vector3Int cellPosition = gl.WorldToCell(playerTransform.position + movement + new Vector3(0, -0.5f, 0));
+                if (!MapController.invalidPositions.Contains(cellPosition))
+                {
+                    playerTransform.Translate(movement);
+                }
+                if (MapController.portals.Contains(cellPosition))
+                {
+                    GlobalEventManager.Instance.MapChange(1);
+                }
 
-            vel = Vector3.zero;
+                vel = Vector3.zero;
+            }
             yield return new WaitForEndOfFrame();
         }
     }
@@ -103,6 +105,11 @@ public class PlayerMovement
     public int GetRunningSpeed()
     {
         return runningSpeed;
+    }
+
+    private void updateGrid()
+    {
+        gl = MapController.currentMap.GetComponent<Grid>();
     }
     private void MoveUp() {
         upClickEnd = false;
@@ -138,6 +145,8 @@ public class PlayerMovement
         PressedKeyEventManager.Instance.onLeftKeyUnPress -= StopMovingLeft;
         PressedKeyEventManager.Instance.onRightKeyUnPress -= StopMovingRight;
         PressedKeyEventManager.Instance.onSprintKeyUnPress -= StopSprint;
+
+        GlobalEventManager.Instance.onMapChanged -= updateGrid;
 
     }
 }

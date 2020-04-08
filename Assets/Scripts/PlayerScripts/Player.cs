@@ -18,11 +18,9 @@ namespace Player {
             new WaitForEndOfFrame();
             StartCoroutine(playerMovement.Move());
         }
-
         // Update is called once per frame
         void Update()
         {
-        
         }
 
         

@@ -13,6 +13,7 @@ public class Map : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MapController.currentMap = gameObject;
         Tilemap collisionTileMap = invalidPositionsGO.GetComponent<Tilemap>();
         InitializeInvalidPositions(collisionTileMap);
         Tilemap portalTileMap = portalPositionsGO.GetComponent<Tilemap>();

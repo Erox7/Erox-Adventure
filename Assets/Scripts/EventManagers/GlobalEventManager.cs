@@ -26,4 +26,13 @@ public class GlobalEventManager : MonoBehaviour
             onMapChange(id);
         }
     }
+
+    public event Action onMapChanged;
+    public void MapChanged()
+    {
+        if (onMapChanged != null)
+        {
+            onMapChanged();
+        }
+    }
 }
