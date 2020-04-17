@@ -42,6 +42,7 @@ public class PlayerMovement
         PressedKeyEventManager.Instance.onRightKeyUnPress += StopMovingRight;
         PressedKeyEventManager.Instance.onSprintKeyUnPress += StopSprint;
 
+        PressedKeyEventManager.Instance.onAttackKeyPress += PlayerAttack;
         GlobalEventManager.Instance.onMapChanged += updateGrid;
     }
 
@@ -82,6 +83,14 @@ public class PlayerMovement
             yield return new WaitForEndOfFrame();
         }
     }
+
+    public void PlayerAttack()
+    {
+        // Se calcula a partir de la posición delante de la que estoy (Mirar cual es el ultimo movimiento que he hecho,
+        // o algo así para saber a que lado mira el pj)
+        // La posición que tengo delante como Vector3Int, le pregunto al EnemyController que si en esa posición se encuentra algun enemigo
+        // En caso positivo le hacemos trigger de la función para hacer daño y retroceder 1 casilla
+    }   
     public void SetPlayerSpeed(int newSpeed)
     {
         playerSpeed = newSpeed;

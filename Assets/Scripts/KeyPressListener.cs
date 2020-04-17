@@ -28,6 +28,10 @@ public class KeyPressListener : MonoBehaviour
         {
             PressedKeyEventManager.Instance.Sprint();
         }
+        if (Input.GetKeyDown(gameConfig.attack))
+        {
+            PressedKeyEventManager.Instance.AttackKeyPressed();
+        }
 
         if (Input.GetKeyUp(gameConfig.moveUp))
         {
