@@ -11,6 +11,7 @@ public class PlayerMovement
     private bool rightClickEnd;
     private bool leftClickEnd;
     public Transform playerTransform;
+    public Animator playerAnimator;
     private int playerSpeed,runningSpeed,actualSpeed;
     private GridLayout gl;
     private Vector3 movement;
@@ -22,7 +23,7 @@ public class PlayerMovement
         Right
     }
     public PlayerMovement() { }
-    public PlayerMovement(Transform pTransform)
+    public PlayerMovement(Transform pTransform, Animator pAnimator)
     {
         upClickEnd = true;
         downClickEnd = true;
@@ -30,6 +31,7 @@ public class PlayerMovement
         leftClickEnd = true;
         movement = new Vector3();
         playerTransform = pTransform;
+        playerAnimator = pAnimator;
         PressedKeyEventManager.Instance.onUpKeyPress += MoveUp;
         PressedKeyEventManager.Instance.onDownKeyPress += MoveDown;
         PressedKeyEventManager.Instance.onLeftKeyPress += MoveLeft;
@@ -69,16 +71,24 @@ public class PlayerMovement
                 }
                 movement = ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
                 Vector3Int cellPosition = gl.WorldToCell(playerTransform.position + movement + new Vector3(0, -0.5f, 0));
-                if (!MapController.invalidPositions.Contains(cellPosition))
+                if (vel != Vector3.zero && !MapController.invalidPositions.Contains(cellPosition))
                 {
+                    playerAnimator.SetBool("walking", true);
+                    playerAnimator.SetFloat("moveX",vel.x);
+                    playerAnimator.SetFloat("moveY", vel.y);
                     playerTransform.Translate(movement);
-                }
+                } 
                 if (MapController.portals.ContainsKey(cellPosition))
                 {
                     GlobalEventManager.Instance.MapChange(MapController.portals[cellPosition]);
                 }
-
-                vel = Vector3.zero;
+                if (vel == Vector3.zero)
+                {
+                    playerAnimator.SetBool("walking", false);
+                } else
+                {
+                    vel = Vector3.zero;
+                }
             }
             yield return new WaitForEndOfFrame();
         }

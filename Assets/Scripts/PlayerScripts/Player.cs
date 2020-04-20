@@ -11,7 +11,7 @@ namespace Player {
         void Start()
         {
             transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y - 0.5f, transform.position.z);
-            playerMovement = new PlayerMovement(transform);
+            playerMovement = new PlayerMovement(transform, GetComponent<Animator>());
             playerMovement.SetPlayerSpeed(player.speed);
             playerMovement.SetActualSpeed(player.speed);
             playerMovement.SetRunningSpeed(player.runningSpeed);
