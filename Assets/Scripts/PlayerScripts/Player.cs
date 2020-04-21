@@ -17,6 +17,7 @@ namespace Player {
             playerMovement.SetRunningSpeed(player.runningSpeed);
             new WaitForEndOfFrame();
             StartCoroutine(playerMovement.Move());
+            StartCoroutine(playerMovement.Attack());
         }
         // Update is called once per frame
         void Update()

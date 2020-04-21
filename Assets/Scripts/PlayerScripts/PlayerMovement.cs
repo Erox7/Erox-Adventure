@@ -10,6 +10,7 @@ public class PlayerMovement
     private bool downClickEnd;
     private bool rightClickEnd;
     private bool leftClickEnd;
+    private bool attackClick;
     public Transform playerTransform;
     public Animator playerAnimator;
     private int playerSpeed,runningSpeed,actualSpeed;
@@ -29,6 +30,7 @@ public class PlayerMovement
         downClickEnd = true;
         rightClickEnd = true;
         leftClickEnd = true;
+        attackClick = false;
         movement = new Vector3();
         playerTransform = pTransform;
         playerAnimator = pAnimator;
@@ -50,15 +52,15 @@ public class PlayerMovement
 
     public IEnumerator Move() {
         Vector3 vel = Vector3.zero;
-        while (true )
+        while (true)
         {
             if((gl != null || gl != default)) { 
                 if (!upClickEnd)
-    {
+                {
                     vel += new Vector3(0, 1, 0);
                 }
                 else if (!downClickEnd)
-    {
+                {
                     vel += new Vector3(0, -1, 0);
                 }
                 else if (!leftClickEnd)
@@ -93,14 +95,29 @@ public class PlayerMovement
             yield return new WaitForEndOfFrame();
         }
     }
-
+    public IEnumerator Attack()
+    {
+        while (true)
+        {
+            if(attackClick)
+            {
+                playerAnimator.SetBool("attack", true);
+                yield return new WaitForEndOfFrame();
+                playerAnimator.SetBool("attack", false);
+                attackClick = false;
+                yield return new WaitForSeconds(.3f);
+            }
+            yield return new WaitForEndOfFrame();
+        }
+    }
     public void PlayerAttack()
     {
         // Se calcula a partir de la posición delante de la que estoy (Mirar cual es el ultimo movimiento que he hecho,
         // o algo así para saber a que lado mira el pj)
         // La posición que tengo delante como Vector3Int, le pregunto al EnemyController que si en esa posición se encuentra algun enemigo
         // En caso positivo le hacemos trigger de la función para hacer daño y retroceder 1 casilla
-    }   
+        attackClick = true;
+    }
     public void SetPlayerSpeed(int newSpeed)
     {
         playerSpeed = newSpeed;
