@@ -104,4 +104,13 @@ public class PressedKeyEventManager : MonoBehaviour
             onSprintKeyUnPress();
         }
     }
+
+    public event Action onAttackKeyPress;
+    public void AttackKeyPressed()
+    {
+        if (onAttackKeyPress != null)
+        {
+            onAttackKeyPress();
+        }
+    }
 }

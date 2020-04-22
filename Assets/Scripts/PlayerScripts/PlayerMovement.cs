@@ -10,7 +10,9 @@ public class PlayerMovement
     private bool downClickEnd;
     private bool rightClickEnd;
     private bool leftClickEnd;
+    private bool attackClick;
     public Transform playerTransform;
+    public Animator playerAnimator;
     private int playerSpeed,runningSpeed,actualSpeed;
     private GridLayout gl;
     private Vector3 movement;
@@ -22,14 +24,16 @@ public class PlayerMovement
         Right
     }
     public PlayerMovement() { }
-    public PlayerMovement(Transform pTransform)
+    public PlayerMovement(Transform pTransform, Animator pAnimator)
     {
         upClickEnd = true;
         downClickEnd = true;
         rightClickEnd = true;
         leftClickEnd = true;
+        attackClick = false;
         movement = new Vector3();
         playerTransform = pTransform;
+        playerAnimator = pAnimator;
         PressedKeyEventManager.Instance.onUpKeyPress += MoveUp;
         PressedKeyEventManager.Instance.onDownKeyPress += MoveDown;
         PressedKeyEventManager.Instance.onLeftKeyPress += MoveLeft;
@@ -42,20 +46,21 @@ public class PlayerMovement
         PressedKeyEventManager.Instance.onRightKeyUnPress += StopMovingRight;
         PressedKeyEventManager.Instance.onSprintKeyUnPress += StopSprint;
 
+        PressedKeyEventManager.Instance.onAttackKeyPress += PlayerAttack;
         GlobalEventManager.Instance.onMapChanged += updateGrid;
     }
 
     public IEnumerator Move() {
         Vector3 vel = Vector3.zero;
-        while (true )
+        while (true)
         {
             if((gl != null || gl != default)) { 
                 if (!upClickEnd)
-    {
+                {
                     vel += new Vector3(0, 1, 0);
                 }
                 else if (!downClickEnd)
-    {
+                {
                     vel += new Vector3(0, -1, 0);
                 }
                 else if (!leftClickEnd)
@@ -68,19 +73,54 @@ public class PlayerMovement
                 }
                 movement = ((vel == Vector3.zero) ? vel : vel.normalized * Time.deltaTime * actualSpeed);
                 Vector3Int cellPosition = gl.WorldToCell(playerTransform.position + movement + new Vector3(0, -0.5f, 0));
-                if (!MapController.invalidPositions.Contains(cellPosition))
+                if (vel != Vector3.zero && !MapController.invalidPositions.Contains(cellPosition))
                 {
+                    playerAnimator.SetBool("walking", true);
+                    playerAnimator.SetFloat("moveX",vel.x);
+                    playerAnimator.SetFloat("moveY", vel.y);
                     playerTransform.Translate(movement);
-                }
+                } 
                 if (MapController.portals.ContainsKey(cellPosition))
                 {
                     GlobalEventManager.Instance.MapChange(MapController.portals[cellPosition]);
                 }
-
-                vel = Vector3.zero;
+                if (vel == Vector3.zero)
+                {
+                    playerAnimator.SetBool("walking", false);
+                } else
+                {
+                    vel = Vector3.zero;
+                }
             }
             yield return new WaitForEndOfFrame();
         }
+    }
+    public IEnumerator Attack()
+    {
+        while (true)
+        {
+            if(attackClick)
+            {
+                playerAnimator.SetBool("attack", true);
+                yield return new WaitForEndOfFrame();
+                playerAnimator.SetBool("attack", false);
+                attackClick = false;
+                yield return new WaitForSeconds(.2f);
+            }
+            yield return new WaitForEndOfFrame();
+        }
+    }
+    public void PlayerAttack()
+    {
+
+        // La posición que tengo delante como Vector3Int, le pregunto al EnemyController que si en esa posición se encuentra algun enemigo
+        // En caso positivo le hacemos trigger de la función para hacer daño y retroceder 1 casilla
+        float xRotation = playerAnimator.GetFloat("moveX");
+        float yRotation = playerAnimator.GetFloat("moveY");
+
+        Vector3 attackPosition = new Vector3(xRotation, yRotation, playerTransform.position.z);
+        Vector3Int attackCell = gl.WorldToCell(playerTransform.position + attackPosition + new Vector3(0, -0.5f, 0));
+        attackClick = true;
     }
     public void SetPlayerSpeed(int newSpeed)
     {
