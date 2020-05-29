@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement
+public class TroncoMovement : EnemyMovement
 {
-
 }

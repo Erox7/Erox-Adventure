@@ -7,7 +7,7 @@ public class PressedKeyEventManager : MonoBehaviour
 {
     public static PressedKeyEventManager Instance => _instance;
     private static PressedKeyEventManager _instance;
-    // Start is called before the first frame update
+    
     void Awake()
     {
         if (_instance != null || _instance != this)
