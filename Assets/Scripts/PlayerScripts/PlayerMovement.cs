@@ -122,6 +122,7 @@ public class PlayerMovement
         Vector3 attackPosition = new Vector3(xRotation, yRotation, playerTransform.position.z);
         Vector3Int attackCell = gl.WorldToCell(playerTransform.position + attackPosition + new Vector3(0, -0.5f, 0));
         // TODO: Invocar el event
+        EnemyEventsManager.Instance.TakeDamage(new Vector2(xRotation,yRotation), attackCell);
         attackClick = true;
     }
     public void SetPlayerSpeed(int newSpeed)

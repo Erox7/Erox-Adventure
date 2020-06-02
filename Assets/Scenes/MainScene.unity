@@ -172,7 +172,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &262007974
 BoxCollider2D:
@@ -560,7 +560,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1476674551
 MonoBehaviour:
@@ -577,8 +577,8 @@ MonoBehaviour:
   hp: 2
   enemyName: Tronco
   attack: 0.5
-  speed: 1
-  gl: {fileID: 0}
+  speed: 0.2
+  gl: {fileID: 1792682601152844719, guid: 6209e8d363ae10c4d85b189b4fec9262, type: 3}
 --- !u!95 &1476674552
 Animator:
   serializedVersion: 3

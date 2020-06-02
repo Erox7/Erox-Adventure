@@ -18,8 +18,8 @@ public class EnemyEventsManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
     
-    public event Action<Vector2Int,int> onTakeDamage;
-    public void TakeDamage(Vector2Int playerOrientation, int position)
+    public event Action<Vector2, Vector3> onTakeDamage;
+    public void TakeDamage(Vector2 playerOrientation, Vector3 position)
     {
         if (onTakeDamage != null)
         {
