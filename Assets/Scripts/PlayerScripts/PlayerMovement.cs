@@ -10,7 +10,6 @@ public class PlayerMovement
     private bool downClickEnd;
     private bool rightClickEnd;
     private bool leftClickEnd;
-    private bool attackClick;
     public Transform playerTransform;
     public Animator playerAnimator;
     private int playerSpeed,runningSpeed,actualSpeed;
@@ -30,7 +29,7 @@ public class PlayerMovement
         downClickEnd = true;
         rightClickEnd = true;
         leftClickEnd = true;
-        attackClick = false;
+
         movement = new Vector3();
         playerTransform = pTransform;
         playerAnimator = pAnimator;

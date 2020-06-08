@@ -59,6 +59,5 @@ public class PlayerAttack
     {
         PressedKeyEventManager.Instance.onAttackKeyPress -= Attack;
         GlobalEventManager.Instance.onMapChanged -= UpdateGrid;
-
     }
 }

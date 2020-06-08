@@ -8,6 +8,7 @@ public class MoveBetweenPoints
     public List<Vector3> _wayPoints;
     public float _speed;
     public GridLayout _gl;
+    public Vector3 movement;
 
     private int _nextPoint;
 
@@ -24,12 +25,12 @@ public class MoveBetweenPoints
     {
         Vector3Int myGlobalPosition = _gl.WorldToCell(_go.transform.position);
         Vector3Int nextPoint = _gl.WorldToCell(_wayPoints[_nextPoint]);
-        Vector3 movement = nextPoint - myGlobalPosition;
+        movement = nextPoint - myGlobalPosition;
         while (true)
         {
             if (haveEqualValues(myGlobalPosition, nextPoint))
             {
-                if(_nextPoint+1 >= _wayPoints.Count)
+                if(_nextPoint + 1 >= _wayPoints.Count)
                 {
                     _nextPoint = 0;
                 } else
@@ -55,4 +56,8 @@ public class MoveBetweenPoints
         return false;
     }
 
+    public void updateMovement(Vector3 position)
+    {
+        movement = _gl.WorldToCell(_wayPoints[_nextPoint]) - _gl.WorldToCell(position);
+    }
 }

@@ -33,28 +33,20 @@ public class Enemy : MonoBehaviour
         StartCoroutine(movement.StartMoving());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void TakeDamage(Vector2 playerOrientation, Vector3 attackedGlobalPosition)
     {
         // TODO: Deberia poder preguntarle al map manager que posicion global tengo
         // Mientras tenga la GL puedo sacar yo mismo la posición, pero es bueno? WHO KNOWS
         // Si coincide con la que ataca el jugador tengo que pillar dmg bruh
-        /*
-         Vector3Int cellPosition = gl.WorldToCell(playerTransform.position + movement + new Vector3(0, -0.5f, 0));
-         */
+
         if (gl != null && gl != default) { 
             Vector3 myGlobalPosition = gl.WorldToCell(this.gameObject.transform.position + new Vector3(0, -0.5f, 0));
         
             if (myGlobalPosition.Equals(attackedGlobalPosition) && !animator.GetBool("Death"))
             {
                 loseHp();
-                Vector3 cellSize = gl.cellSize;
-                this.gameObject.transform.Translate(playerOrientation);
+                gameObject.transform.Translate(playerOrientation);
+                movement.updateMovement(transform.position);
             }
         }
     }
