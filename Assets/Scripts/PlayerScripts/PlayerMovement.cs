@@ -46,7 +46,6 @@ public class PlayerMovement
         PressedKeyEventManager.Instance.onRightKeyUnPress += StopMovingRight;
         PressedKeyEventManager.Instance.onSprintKeyUnPress += StopSprint;
 
-        PressedKeyEventManager.Instance.onAttackKeyPress += PlayerAttack;
         GlobalEventManager.Instance.onMapChanged += UpdateGrid;
     }
 
@@ -94,35 +93,6 @@ public class PlayerMovement
             }
             yield return new WaitForEndOfFrame();
         }
-    }
-    public IEnumerator Attack()
-    {
-        while (true)
-        {
-            if(attackClick)
-            {
-                playerAnimator.SetBool("attack", true);
-                yield return new WaitForEndOfFrame();
-                playerAnimator.SetBool("attack", false);
-                attackClick = false;
-                yield return new WaitForSeconds(.2f);
-            }
-            yield return new WaitForEndOfFrame();
-        }
-    }
-    public void PlayerAttack()
-    {
-        // La posición que tengo delante como Vector3Int, le pregunto al EnemyController que si en esa posición se encuentra algun enemigo
-        // En caso positivo le hacemos trigger de la función para hacer daño y retroceder 1 casilla
-        // Para saber la casilla a la que tiene que moverse hacia atrás (Dependiendo de donde le de el player)
-        // Le podría pasar la dupla de X/Y del animator.
-        float xRotation = playerAnimator.GetFloat("moveX");
-        float yRotation = playerAnimator.GetFloat("moveY");
-
-        Vector3 attackPosition = new Vector3(xRotation, yRotation, playerTransform.position.z);
-        Vector3Int attackCell = gl.WorldToCell(playerTransform.position + attackPosition + new Vector3(0, -0.5f, 0));
-        EnemyEventsManager.Instance.TakeDamage(new Vector2(xRotation,yRotation), attackCell);
-        attackClick = true;
     }
     public void SetPlayerSpeed(int newSpeed)
     {

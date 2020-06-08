@@ -7,6 +7,7 @@ namespace Player {
     {
         public PlayerSO player;
         public PlayerMovement playerMovement;
+        public PlayerAttack playerAttack;
         // Start is called before the first frame update
         void Start()
         {
@@ -15,9 +16,10 @@ namespace Player {
             playerMovement.SetPlayerSpeed(player.speed);
             playerMovement.SetActualSpeed(player.speed);
             playerMovement.SetRunningSpeed(player.runningSpeed);
+            playerAttack = new PlayerAttack(transform, GetComponent<Animator>());
             new WaitForEndOfFrame();
             StartCoroutine(playerMovement.Move());
-            StartCoroutine(playerMovement.Attack());
+            StartCoroutine(playerAttack.AttackAnimation());
         }        
     }
 }
