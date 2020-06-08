@@ -24,11 +24,13 @@ public class Enemy : MonoBehaviour
         movement = new MoveBetweenPoints(this.gameObject,
         new List<Vector3>()
         {
-            new Vector3(5.906329f,9.879445f,0f)
+            transform.position,
+            new Vector3(13.91f, 10.37f,0),
+            new Vector3(7.3f, 7.48f,0)
         },
         speed,
         gl);
-        StartCoroutine(movement.moveToPoint(gl.WorldToLocal(new Vector3(6f, 10.03f, 0f))));
+        StartCoroutine(movement.StartMoving());
     }
 
     // Update is called once per frame

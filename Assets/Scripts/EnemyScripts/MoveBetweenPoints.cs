@@ -9,27 +9,50 @@ public class MoveBetweenPoints
     public float _speed;
     public GridLayout _gl;
 
+    private int _nextPoint;
+
     public MoveBetweenPoints(GameObject go, List<Vector3> points, float speed, GridLayout gl)
     {
         _go = go;
         _wayPoints = points;
         _speed = speed;
         _gl = gl;
+        _nextPoint = 1;
     }
 
-    public void decideWhereToGo()
+    public IEnumerator StartMoving()
     {
-        //moveToPoint(_wayPoints[0]);
-    }
-    public IEnumerator moveToPoint(Vector3 point)
-    {
-        Vector3 myGlobalPosition = _gl.WorldToCell(_gl.transform.position);
-        while (myGlobalPosition != point)
+        Vector3Int myGlobalPosition = _gl.WorldToCell(_go.transform.position);
+        Vector3Int nextPoint = _gl.WorldToCell(_wayPoints[_nextPoint]);
+        Vector3 movement = nextPoint - myGlobalPosition;
+        while (true)
         {
-            _go.transform.Translate(new Vector3(point.x * _speed * Time.deltaTime, 0, 0));
-            myGlobalPosition = _gl.WorldToCell(_gl.transform.position);
-            yield return new WaitForEndOfFrame();
+            if (haveEqualValues(myGlobalPosition, nextPoint))
+            {
+                if(_nextPoint+1 >= _wayPoints.Count)
+                {
+                    _nextPoint = 0;
+                } else
+                {
+                    _nextPoint++;
+                }
+                myGlobalPosition = _gl.WorldToCell(_go.transform.position);
+                nextPoint = _gl.WorldToCell(_wayPoints[_nextPoint]);
+                movement = nextPoint - myGlobalPosition;
+            } else
+            {
+                _go.transform.Translate(movement.normalized * _speed * Time.deltaTime);
+                myGlobalPosition = _gl.WorldToCell(_go.transform.position);
+                yield return new WaitForEndOfFrame();
+            }
         }
+    }
+
+    public bool haveEqualValues(Vector3Int vector1, Vector3Int vector2)
+    {
+        if (vector1.x.Equals(vector2.x) && vector1.y.Equals(vector2.y) && vector1.z.Equals(vector2.z))
+            return true;
+        return false;
     }
 
 }
