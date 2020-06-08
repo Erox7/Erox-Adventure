@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     public float speed;
     public GridLayout gl;
     private Animator animator;
-    private MoveBetweenPoints movement;
+    private MoveToObject movement;
     // Start is called before the first frame update 
     void Start()
     {
@@ -20,8 +20,8 @@ public class Enemy : MonoBehaviour
         GlobalEventManager.Instance.onMapChanged += UpdateGrid;
         gl = MapController.currentMap.GetComponent<GridLayout>();
         animator = GetComponentInParent<Animator>();
-        
-        movement = new MoveBetweenPoints(this.gameObject,
+
+        /*movement = new MoveBetweenPoints(this.gameObject,
         new List<Vector3>()
         {
             transform.position,
@@ -30,6 +30,8 @@ public class Enemy : MonoBehaviour
         },
         speed,
         gl);
+        */
+        movement = new MoveToObject(this.gameObject, GameObject.FindWithTag("Player"), speed);
         StartCoroutine(movement.StartMoving());
     }
 

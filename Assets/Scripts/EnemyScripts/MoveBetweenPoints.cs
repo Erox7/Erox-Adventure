@@ -44,8 +44,8 @@ public class MoveBetweenPoints
             {
                 _go.transform.Translate(movement.normalized * _speed * Time.deltaTime);
                 myGlobalPosition = _gl.WorldToCell(_go.transform.position);
-                yield return new WaitForEndOfFrame();
             }
+            yield return new WaitForEndOfFrame();
         }
     }
 
