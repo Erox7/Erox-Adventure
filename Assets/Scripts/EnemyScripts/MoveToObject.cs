@@ -25,8 +25,4 @@ public class MoveToObject
         }
         
     }
-    public void updateMovement(Vector3 position)
-    {
-        movement = _target.transform.position - position;
-    }
 }

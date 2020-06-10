@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     public float speed;
     public GridLayout gl;
     private Animator animator;
-    private MoveToObject movement;
+    private MoveBetweenPoints movement;
     // Start is called before the first frame update 
     void Start()
     {
@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
         gl = MapController.currentMap.GetComponent<GridLayout>();
         animator = GetComponentInParent<Animator>();
 
-        /*movement = new MoveBetweenPoints(this.gameObject,
+        movement = new MoveBetweenPoints(this.gameObject,
         new List<Vector3>()
         {
             transform.position,
@@ -30,8 +30,8 @@ public class Enemy : MonoBehaviour
         },
         speed,
         gl);
-        */
-        movement = new MoveToObject(this.gameObject, GameObject.FindWithTag("Player"), speed);
+        
+        //movement = new MoveToObject(this.gameObject, GameObject.FindWithTag("Player"), speed);
         StartCoroutine(movement.StartMoving());
     }
 
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
             {
                 loseHp();
                 gameObject.transform.Translate(playerOrientation);
-                movement.updateMovement(transform.position);
+                // movement.updateMovement(transform.position);
             }
         }
     }

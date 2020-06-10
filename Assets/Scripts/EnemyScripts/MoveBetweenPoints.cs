@@ -42,6 +42,7 @@ public class MoveBetweenPoints
                 movement = nextPoint - myGlobalPosition;
             } else
             {
+                movement = nextPoint - myGlobalPosition;
                 _go.transform.Translate(movement.normalized * _speed * Time.deltaTime);
                 myGlobalPosition = _gl.WorldToCell(_go.transform.position);
             }
@@ -54,10 +55,5 @@ public class MoveBetweenPoints
         if (vector1.x.Equals(vector2.x) && vector1.y.Equals(vector2.y) && vector1.z.Equals(vector2.z))
             return true;
         return false;
-    }
-
-    public void updateMovement(Vector3 position)
-    {
-        movement = _gl.WorldToCell(_wayPoints[_nextPoint]) - _gl.WorldToCell(position);
     }
 }
