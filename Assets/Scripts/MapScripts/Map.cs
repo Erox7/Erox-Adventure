@@ -10,7 +10,6 @@ public class Map : MonoBehaviour
     public Vector3 initialCharacterPosition;
     public GameObject invalidPositionsGO;
     public GameObject portalPositionsGO;
-
     // Start is called before the first frame update
     void Start()
     {

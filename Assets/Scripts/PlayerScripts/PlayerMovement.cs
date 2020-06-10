@@ -10,7 +10,6 @@ public class PlayerMovement
     private bool downClickEnd;
     private bool rightClickEnd;
     private bool leftClickEnd;
-    private bool attackClick;
     public Transform playerTransform;
     public Animator playerAnimator;
     private int playerSpeed,runningSpeed,actualSpeed;
@@ -30,7 +29,7 @@ public class PlayerMovement
         downClickEnd = true;
         rightClickEnd = true;
         leftClickEnd = true;
-        attackClick = false;
+
         movement = new Vector3();
         playerTransform = pTransform;
         playerAnimator = pAnimator;
@@ -46,8 +45,7 @@ public class PlayerMovement
         PressedKeyEventManager.Instance.onRightKeyUnPress += StopMovingRight;
         PressedKeyEventManager.Instance.onSprintKeyUnPress += StopSprint;
 
-        PressedKeyEventManager.Instance.onAttackKeyPress += PlayerAttack;
-        GlobalEventManager.Instance.onMapChanged += updateGrid;
+        GlobalEventManager.Instance.onMapChanged += UpdateGrid;
     }
 
     public IEnumerator Move() {
@@ -95,33 +93,6 @@ public class PlayerMovement
             yield return new WaitForEndOfFrame();
         }
     }
-    public IEnumerator Attack()
-    {
-        while (true)
-        {
-            if(attackClick)
-            {
-                playerAnimator.SetBool("attack", true);
-                yield return new WaitForEndOfFrame();
-                playerAnimator.SetBool("attack", false);
-                attackClick = false;
-                yield return new WaitForSeconds(.2f);
-            }
-            yield return new WaitForEndOfFrame();
-        }
-    }
-    public void PlayerAttack()
-    {
-
-        // La posición que tengo delante como Vector3Int, le pregunto al EnemyController que si en esa posición se encuentra algun enemigo
-        // En caso positivo le hacemos trigger de la función para hacer daño y retroceder 1 casilla
-        float xRotation = playerAnimator.GetFloat("moveX");
-        float yRotation = playerAnimator.GetFloat("moveY");
-
-        Vector3 attackPosition = new Vector3(xRotation, yRotation, playerTransform.position.z);
-        Vector3Int attackCell = gl.WorldToCell(playerTransform.position + attackPosition + new Vector3(0, -0.5f, 0));
-        attackClick = true;
-    }
     public void SetPlayerSpeed(int newSpeed)
     {
         playerSpeed = newSpeed;
@@ -147,7 +118,7 @@ public class PlayerMovement
         return runningSpeed;
     }
 
-    private void updateGrid()
+    private void UpdateGrid()
     {
         gl = MapController.currentMap.GetComponent<Grid>();
     }
@@ -186,7 +157,7 @@ public class PlayerMovement
         PressedKeyEventManager.Instance.onRightKeyUnPress -= StopMovingRight;
         PressedKeyEventManager.Instance.onSprintKeyUnPress -= StopSprint;
 
-        GlobalEventManager.Instance.onMapChanged -= updateGrid;
+        GlobalEventManager.Instance.onMapChanged -= UpdateGrid;
 
     }
 }
