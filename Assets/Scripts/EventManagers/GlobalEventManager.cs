@@ -35,4 +35,22 @@ public class GlobalEventManager : MonoBehaviour
             onMapChanged();
         }
     }
+
+    public event Action onLeverActivated;
+    public void LeverActivated()
+    {
+        if (onLeverActivated != null)
+        {
+            onLeverActivated();
+        }
+    }
+
+    public event Action onLeverDectivated;
+    public void LeverDectivated()
+    {
+        if (onLeverDectivated != null)
+        {
+            onLeverDectivated();
+        }
+    }
 }

@@ -21,10 +21,6 @@ public class EnemyEventsManager : MonoBehaviour
     public event Action<Vector2, Vector3> onTakeDamage;
     public void TakeDamage(Vector2 playerOrientation, Vector3 position)
     {
-        if (onTakeDamage != null)
-        {
-            onTakeDamage(playerOrientation, position);
-        }
-        // onTakeDamage?.Invoke(playerOrientation, position);
+        onTakeDamage?.Invoke(playerOrientation, position);
     }
 }

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Map
+  - Lever
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - 
   - Ground
-  - 
+  - Levers
   - 
   - 
   - 
@@ -50,6 +51,9 @@ TagManager:
     locked: 0
   - name: UpsideGround
     uniqueID: 1629066371
+    locked: 0
+  - name: Levers
+    uniqueID: 3371852883
     locked: 0
   - name: Player
     uniqueID: 2488199223
