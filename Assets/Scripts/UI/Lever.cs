@@ -6,7 +6,7 @@ public class Lever : MonoBehaviour
 {
     public bool _active;
     public bool _horizontal;
-    public bool _id;
+    public int _id;
     public List<Sprite> sprites;
     void Start()
     {
@@ -54,11 +54,11 @@ public class Lever : MonoBehaviour
     }
     public void TriggerLeverActivated()
     {
-        GlobalEventManager.Instance.LeverActivated();
+        GlobalEventManager.Instance.LeverActivated(_id);
     }
 
     public void TriggerLeverDectivated()
     {
-        GlobalEventManager.Instance.LeverDectivated();
+        GlobalEventManager.Instance.LeverDectivated(_id);
     }
 }

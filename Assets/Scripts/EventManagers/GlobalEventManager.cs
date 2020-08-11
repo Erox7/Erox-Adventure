@@ -36,21 +36,30 @@ public class GlobalEventManager : MonoBehaviour
         }
     }
 
-    public event Action onLeverActivated;
-    public void LeverActivated()
+    public event Action<int> onLeverActivated;
+    public void LeverActivated(int id)
     {
         if (onLeverActivated != null)
         {
-            onLeverActivated();
+            onLeverActivated(id);
         }
     }
 
-    public event Action onLeverDectivated;
-    public void LeverDectivated()
+    public event Action<int> onLeverDectivated;
+    public void LeverDectivated(int id)
     {
         if (onLeverDectivated != null)
         {
-            onLeverDectivated();
+            onLeverDectivated(id);
+        }
+    }
+
+    public event Action<Vector3Int> onDoorOpened;
+    public void DoorOpened(Vector3Int position)
+    {
+        if (onDoorOpened != null)
+        {
+            onDoorOpened(position);
         }
     }
 }

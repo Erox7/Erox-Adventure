@@ -14,9 +14,16 @@ public class MapController : MonoBehaviour
     public void Start()
     {
         ChargeNewMap(0);
+        GlobalEventManager.Instance.onDoorOpened += NewValidPosition;
         GlobalEventManager.Instance.onMapChange += ChargeNewMap;
     }
-
+    public void NewValidPosition(Vector3Int disablePosition)
+    {
+        if(invalidPositions.Contains(disablePosition))
+        {
+            invalidPositions.Remove(disablePosition);
+        }
+    }
     public void ChargeNewMap(int mapId)
     {
         GameObject go = maps[mapId];
