@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Tilemaps;
 public class MapController : MonoBehaviour
 {
     public static List<Vector3Int> invalidPositions = new List<Vector3Int>();
@@ -14,14 +14,22 @@ public class MapController : MonoBehaviour
     public void Start()
     {
         ChargeNewMap(0);
-        GlobalEventManager.Instance.onDoorOpened += NewValidPosition;
+        GlobalEventManager.Instance.onEnablePosition += NewValidPosition;
+        GlobalEventManager.Instance.onDisablePosition += NewInValidPosition;
         GlobalEventManager.Instance.onMapChange += ChargeNewMap;
     }
-    public void NewValidPosition(Vector3Int disablePosition)
+    public void NewInValidPosition(Vector3Int doorPosition)
     {
-        if(invalidPositions.Contains(disablePosition))
+        if (!invalidPositions.Contains(doorPosition))
         {
-            invalidPositions.Remove(disablePosition);
+            invalidPositions.Add(doorPosition);
+        }
+    }
+    public void NewValidPosition(Vector3Int doorPosition)
+    {
+        if (invalidPositions.Contains(doorPosition))
+        {
+            invalidPositions.Remove(doorPosition);
         }
     }
     public void ChargeNewMap(int mapId)

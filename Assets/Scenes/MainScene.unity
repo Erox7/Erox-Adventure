@@ -1092,9 +1092,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf6b8e1994e1744da2bd5476bb47543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _neededLevers: 1
+  _neededLeversNum: 0
   _opened: 0
-  _levers: 0000000000000000
+  _neededLevers: 00000000
+  _activatedLevers: 
 --- !u!212 &748586522
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1847,8 +1848,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1439565792}
-  - component: {fileID: 1439565791}
   - component: {fileID: 1439565790}
+  - component: {fileID: 1439565791}
   m_Layer: 9
   m_Name: Lever
   m_TagString: Lever

@@ -54,12 +54,21 @@ public class GlobalEventManager : MonoBehaviour
         }
     }
 
-    public event Action<Vector3Int> onDoorOpened;
-    public void DoorOpened(Vector3Int position)
+    public event Action<Vector3Int> onEnablePosition;
+    public void EnablePosition(Vector3Int position)
     {
-        if (onDoorOpened != null)
+        if (onEnablePosition != null)
         {
-            onDoorOpened(position);
+            onEnablePosition(position);
+        }
+    }
+
+    public event Action<Vector3Int> onDisablePosition;
+    public void DisablePosition(Vector3Int position)
+    {
+        if (onDisablePosition != null)
+        {
+            onDisablePosition(position);
         }
     }
 }
