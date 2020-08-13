@@ -16,3 +16,4 @@ MonoBehaviour:
   attackDamage: 1
   speed: 3
   runningSpeed: 4
+  mana: 2
