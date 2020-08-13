@@ -35,4 +35,40 @@ public class GlobalEventManager : MonoBehaviour
             onMapChanged();
         }
     }
+
+    public event Action<int> onLeverActivated;
+    public void LeverActivated(int id)
+    {
+        if (onLeverActivated != null)
+        {
+            onLeverActivated(id);
+        }
+    }
+
+    public event Action<int> onLeverDectivated;
+    public void LeverDectivated(int id)
+    {
+        if (onLeverDectivated != null)
+        {
+            onLeverDectivated(id);
+        }
+    }
+
+    public event Action<Vector3Int> onEnablePosition;
+    public void EnablePosition(Vector3Int position)
+    {
+        if (onEnablePosition != null)
+        {
+            onEnablePosition(position);
+        }
+    }
+
+    public event Action<Vector3Int> onDisablePosition;
+    public void DisablePosition(Vector3Int position)
+    {
+        if (onDisablePosition != null)
+        {
+            onDisablePosition(position);
+        }
+    }
 }
