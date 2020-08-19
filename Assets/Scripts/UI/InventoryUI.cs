@@ -4,7 +4,7 @@ public class InventoryUI : MonoBehaviour
 {
     public Transform itemsParent;
     public GameObject inventoryUI;
-
+    public static bool gameIsPaused = false;
     Inventory inventory;
     InventorySlot[] slots;
     // Start is called before the first frame update
@@ -17,7 +17,7 @@ public class InventoryUI : MonoBehaviour
     }
     public void TriggerInventory()
     {
-        if (inventoryUI.activeSelf)
+        if (gameIsPaused)
         {
             Resume();
         } else
@@ -29,10 +29,12 @@ public class InventoryUI : MonoBehaviour
 
     public void Resume()
     {
+        gameIsPaused = false;
         Time.timeScale = 1f;
     }
     public void Pause()
     {
+        gameIsPaused = true;
         Time.timeScale = 0f;
     }
     // Update is called once per frame
