@@ -12,4 +12,5 @@ public class GameConfigurationSO : ScriptableObject
 
     public KeyCode attack;
     public KeyCode sprint;
+    public KeyCode inventory;
 }

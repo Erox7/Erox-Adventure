@@ -32,7 +32,6 @@ public class KeyPressListener : MonoBehaviour
         {
             PressedKeyEventManager.Instance.AttackKeyPressed();
         }
-
         if (Input.GetKeyUp(gameConfig.moveUp))
         {
             PressedKeyEventManager.Instance.UpKeyUnPressed();
@@ -52,6 +51,10 @@ public class KeyPressListener : MonoBehaviour
         if (Input.GetKeyUp(gameConfig.sprint)) 
         {
             PressedKeyEventManager.Instance.StopSprint();
+        }
+        if (Input.GetKeyUp(gameConfig.inventory))
+        {
+            PressedKeyEventManager.Instance.InventoryKeyPressed();
         }
     }
 }

@@ -113,4 +113,13 @@ public class PressedKeyEventManager : MonoBehaviour
             onAttackKeyPress();
         }
     }
+
+    public event Action onInventoryKeyPress;
+    public void InventoryKeyPressed()
+    {
+        if (onInventoryKeyPress != null)
+        {
+            onInventoryKeyPress();
+        }
+    }
 }
