@@ -37,11 +37,6 @@ public class InventoryUI : MonoBehaviour
         gameIsPaused = true;
         Time.timeScale = 0f;
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void UpdateUI ()
     {
         for (int i = 0; i < slots.Length; i++)

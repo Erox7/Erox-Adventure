@@ -71,4 +71,13 @@ public class GlobalEventManager : MonoBehaviour
             onDisablePosition(position);
         }
     }
+
+    public event Action<Vector3Int> onPickUpItem;
+    public void PickUpItem(Vector3Int position)
+    {
+        if (onPickUpItem != null)
+        {
+            onPickUpItem(position);
+        }
+    }
 }
