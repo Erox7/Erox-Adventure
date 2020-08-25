@@ -56,5 +56,13 @@ public class KeyPressListener : MonoBehaviour
         {
             PressedKeyEventManager.Instance.InventoryKeyPressed();
         }
+        if (Input.GetKeyUp(gameConfig.fireAttack))
+        {
+            PressedKeyEventManager.Instance.FireAttackKeyPressed();
+        }
+        if (Input.GetKeyDown(gameConfig.fireAttack))
+        {
+            PressedKeyEventManager.Instance.FireAttackKeyUnPressed();
+        }
     }
 }

@@ -45,4 +45,16 @@ public class Inventory : MonoBehaviour
         if (onItemChangedCallback != null)
             onItemChangedCallback.Invoke();
     }
+
+    public bool ContainsItemName(string itemName)
+    {
+        foreach(Item item in items)
+        {
+            if(item.itemName.Equals(itemName))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

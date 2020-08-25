@@ -122,4 +122,21 @@ public class PressedKeyEventManager : MonoBehaviour
             onInventoryKeyPress();
         }
     }
+
+    public event Action onFireAttackKeyPress;
+    public void FireAttackKeyPressed()
+    {
+        if (onFireAttackKeyPress != null)
+        {
+            onFireAttackKeyPress();
+        }
+    }
+    public event Action onFireAttackKeyUnPressed;
+    public void FireAttackKeyUnPressed()
+    {
+        if (onFireAttackKeyUnPressed != null)
+        {
+            onFireAttackKeyUnPressed();
+        }
+    }
 }

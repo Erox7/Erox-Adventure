@@ -13,4 +13,11 @@ public class GameConfigurationSO : ScriptableObject
     public KeyCode attack;
     public KeyCode sprint;
     public KeyCode inventory;
+
+    public KeyCode fireAttack;
+    public KeyCode waterAttack;
+    public KeyCode rockAttack;
+    public KeyCode windAttack;
+
+
 }

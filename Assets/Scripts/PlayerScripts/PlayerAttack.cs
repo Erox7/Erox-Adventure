@@ -17,6 +17,7 @@ public class PlayerAttack
         playerAnimator = pAnimator;
 
         PressedKeyEventManager.Instance.onAttackKeyPress += Attack;
+        PressedKeyEventManager.Instance.onFireAttackKeyPress += FireAttack;
         GlobalEventManager.Instance.onMapChanged += UpdateGrid;
     }
 
@@ -50,6 +51,14 @@ public class PlayerAttack
         attackClick = true;
     }
 
+    public void FireAttack()
+    {
+        if(Inventory.instance.ContainsItemName("FireScroll"))
+        {
+            // Implement Fire attack
+        }
+    }
+
     private void UpdateGrid()
     {
         gl = MapController.currentMap.GetComponent<Grid>();
@@ -58,6 +67,7 @@ public class PlayerAttack
     ~PlayerAttack()
     {
         PressedKeyEventManager.Instance.onAttackKeyPress -= Attack;
+        PressedKeyEventManager.Instance.onFireAttackKeyPress -= FireAttack;
         GlobalEventManager.Instance.onMapChanged -= UpdateGrid;
     }
 }
