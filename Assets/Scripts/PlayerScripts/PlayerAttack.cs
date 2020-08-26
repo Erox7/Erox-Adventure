@@ -6,16 +6,20 @@ public class PlayerAttack
 {
     public Transform playerTransform;
     public Animator playerAnimator;
+    public float _fireManaCost, _waterManaCost, _rockManaCost, _windManaCost;
     private GridLayout gl;
     private bool attackClick;
 
     public PlayerAttack() { }
-    public PlayerAttack(Transform pTransform, Animator pAnimator)
+    public PlayerAttack(Transform pTransform, Animator pAnimator, float fireManaCost, float waterManaCost, float windManaCost, float rockManaCost)
     {
         attackClick = false;
         playerTransform = pTransform;
         playerAnimator = pAnimator;
-
+        _fireManaCost = fireManaCost;
+        _waterManaCost = waterManaCost;
+        _rockManaCost = rockManaCost;
+        _windManaCost = windManaCost;
         PressedKeyEventManager.Instance.onAttackKeyPress += Attack;
         PressedKeyEventManager.Instance.onFireAttackKeyPress += FireAttack;
         GlobalEventManager.Instance.onMapChanged += UpdateGrid;
@@ -53,9 +57,12 @@ public class PlayerAttack
 
     public void FireAttack()
     {
-        if(Inventory.instance.ContainsItemName("FireScroll"))
+        if(Inventory.instance.ContainsItemName("Fire Scroll") && Inventory.instance.actualMana >= _fireManaCost)
         {
             // Implement Fire attack
+            GlobalEventManager.Instance.DecreaseMana(_fireManaCost);
+            Inventory.instance.actualMana -= _fireManaCost;
+            Debug.Log("Un poquito kekw chat");
         }
     }
 

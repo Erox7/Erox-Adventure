@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-
-public class InventoryUI : MonoBehaviour
+using UnityEngine.UI;
+public class UIController : MonoBehaviour
 {
     public Transform itemsParent;
     public GameObject inventoryUI;
+    public Slider manaBar;
     public static bool gameIsPaused = false;
     Inventory inventory;
     InventorySlot[] slots;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +16,8 @@ public class InventoryUI : MonoBehaviour
         inventory.onItemChangedCallback += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<InventorySlot>();
         PressedKeyEventManager.Instance.onInventoryKeyPress += TriggerInventory;
+        GlobalEventManager.Instance.onManaDecrease += DecreaseMana;
+        GlobalEventManager.Instance.onManaIncrease += IncreaseMana;
     }
     public void TriggerInventory()
     {
@@ -50,9 +54,19 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
+    void IncreaseMana(float mana)
+    {
+        manaBar.value += mana;
+    }
+    void DecreaseMana(float mana)
+    {
+        manaBar.value -= mana;
+    }
     private void OnDestroy()
     {
         PressedKeyEventManager.Instance.onInventoryKeyPress -= TriggerInventory;
         inventory.onItemChangedCallback -= UpdateUI;
+        GlobalEventManager.Instance.onManaDecrease -= DecreaseMana;
+        GlobalEventManager.Instance.onManaIncrease -= IncreaseMana;
     }
 }

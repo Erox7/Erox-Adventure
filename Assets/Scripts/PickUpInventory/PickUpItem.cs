@@ -28,4 +28,10 @@ public class PickUpItem : MonoBehaviour
             }
         }
     }
+
+    private void OnDestroy()
+    {
+        GlobalEventManager.Instance.onPickUpItem -= PickUp;
+
+    }
 }

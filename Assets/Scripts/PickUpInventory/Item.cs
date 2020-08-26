@@ -3,6 +3,6 @@
 public class Item : ScriptableObject
 {
     public string itemName = "New Item";
-    public bool isDefaultItem = false;
+    public bool isConsumable = false;
     public Sprite icon = null;
 }

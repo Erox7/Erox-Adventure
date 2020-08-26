@@ -80,4 +80,31 @@ public class GlobalEventManager : MonoBehaviour
             onPickUpItem(position);
         }
     }
+
+    public event Action<Item> onConsumeItem;
+    public void ConsumeItem(Item item)
+    {
+        if (onConsumeItem != null)
+        {
+            onConsumeItem(item);
+        }
+    }
+
+    public event Action<float> onManaDecrease;
+    public void DecreaseMana(float decreaseNumber)
+    {
+        if (onManaDecrease != null)
+        {
+            onManaDecrease(decreaseNumber);
+        }
+    }
+
+    public event Action<float> onManaIncrease;
+    public void IncreaseMana(float increaseNumber)
+    {
+        if (onManaIncrease != null)
+        {
+            onManaIncrease(increaseNumber);
+        }
+    }
 }
