@@ -72,6 +72,9 @@ public class MapController : MonoBehaviour
     public void onDestroy()
     {
         GlobalEventManager.Instance.onMapChange -= ChargeNewMap;
+        GlobalEventManager.Instance.onPickUpItem -= DeleteItemPosition;
+        GlobalEventManager.Instance.onEnablePosition -= NewValidPosition;
+        GlobalEventManager.Instance.onDisablePosition -= NewInValidPosition;
     }
 
 }

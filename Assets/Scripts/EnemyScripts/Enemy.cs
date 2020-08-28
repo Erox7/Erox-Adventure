@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         EnemyEventsManager.Instance.onTakeDamage += TakeDamage;
+        EnemyEventsManager.Instance.onTakeProjectileDamage += TakeProjectileDamage;
         GlobalEventManager.Instance.onMapChanged += UpdateGrid;
         gl = MapController.currentMap.GetComponent<GridLayout>();
         animator = GetComponentInParent<Animator>();
@@ -52,6 +53,24 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    public void TakeProjectileDamage(Vector3 attackedGlobalPosition)
+    {
+        // TODO: Deberia poder preguntarle al map manager que posicion global tengo
+        // Mientras tenga la GL puedo sacar yo mismo la posición, pero es bueno? WHO KNOWS
+        // Si coincide con la que ataca el jugador tengo que pillar dmg bruh
+
+        if (gl != null && gl != default)
+        {
+            Vector3 myGlobalPosition = gl.WorldToCell(this.gameObject.transform.position + new Vector3(0, -0.5f, 0));
+
+            if (myGlobalPosition.Equals(attackedGlobalPosition) && !animator.GetBool("Death"))
+            {
+                loseHp();
+            }
+        }
+    }
+
     private void loseHp()
     {
         this.hp -= 0.5f;

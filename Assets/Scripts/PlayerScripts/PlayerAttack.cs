@@ -7,8 +7,10 @@ public class PlayerAttack
     public Transform playerTransform;
     public Animator playerAnimator;
     public float _fireManaCost, _waterManaCost, _rockManaCost, _windManaCost;
+    public Object prefab = Resources.Load("FireAttack");
     private GridLayout gl;
     private bool attackClick;
+
 
     public PlayerAttack() { }
     public PlayerAttack(Transform pTransform, Animator pAnimator, float fireManaCost, float waterManaCost, float windManaCost, float rockManaCost)
@@ -57,15 +59,24 @@ public class PlayerAttack
 
     public void FireAttack()
     {
-        if(Inventory.instance.ContainsItemName("Fire Scroll") && Inventory.instance.actualMana >= _fireManaCost)
+        float xRotation = playerAnimator.GetFloat("moveX");
+        float yRotation = playerAnimator.GetFloat("moveY");
+        if (Inventory.instance.ContainsItemName("Fire Scroll") && Inventory.instance.actualMana >= _fireManaCost)
         {
             // Implement Fire attack
             GlobalEventManager.Instance.DecreaseMana(_fireManaCost);
             Inventory.instance.actualMana -= _fireManaCost;
-            Debug.Log("Un poquito kekw chat");
+            InstantiatePrefab(xRotation,yRotation);
         }
     }
 
+    public void InstantiatePrefab(float xRotation, float yRotation)
+    {
+        GameObject newObject = GameObject.Instantiate(prefab) as GameObject;
+        PlayerFireAttack yourObject = newObject.GetComponent<PlayerFireAttack>();
+        yourObject.orientation = new Vector2(xRotation,yRotation);
+        GameObject.Instantiate(yourObject, playerTransform.position, Quaternion.identity);
+    }
     private void UpdateGrid()
     {
         gl = MapController.currentMap.GetComponent<Grid>();
