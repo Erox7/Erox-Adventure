@@ -8,7 +8,7 @@ public class PlayerFireAttack : MonoBehaviour
     GridLayout currentMap;
     Vector3Int lastWorldPosition;
     public Vector2 orientation;
-    public float speed = 3f;
+    public float speed = 6f;
     // Start is called before the first frame update
     void Start()
     {

@@ -72,10 +72,10 @@ public class PlayerAttack
 
     public void InstantiatePrefab(float xRotation, float yRotation)
     {
-        GameObject newObject = GameObject.Instantiate(prefab) as GameObject;
+        GameObject newObject = prefab as GameObject;
         PlayerFireAttack yourObject = newObject.GetComponent<PlayerFireAttack>();
         yourObject.orientation = new Vector2(xRotation,yRotation);
-        GameObject.Instantiate(yourObject, playerTransform.position, Quaternion.identity);
+        GameObject.Instantiate(prefab, playerTransform.position, Quaternion.identity);
     }
     private void UpdateGrid()
     {
