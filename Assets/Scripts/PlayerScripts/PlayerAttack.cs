@@ -6,17 +6,24 @@ public class PlayerAttack
 {
     public Transform playerTransform;
     public Animator playerAnimator;
+    public float _fireManaCost, _waterManaCost, _rockManaCost, _windManaCost;
+    public Object prefab = Resources.Load("FireAttack");
     private GridLayout gl;
     private bool attackClick;
 
+
     public PlayerAttack() { }
-    public PlayerAttack(Transform pTransform, Animator pAnimator)
+    public PlayerAttack(Transform pTransform, Animator pAnimator, float fireManaCost, float waterManaCost, float windManaCost, float rockManaCost)
     {
         attackClick = false;
         playerTransform = pTransform;
         playerAnimator = pAnimator;
-
+        _fireManaCost = fireManaCost;
+        _waterManaCost = waterManaCost;
+        _rockManaCost = rockManaCost;
+        _windManaCost = windManaCost;
         PressedKeyEventManager.Instance.onAttackKeyPress += Attack;
+        PressedKeyEventManager.Instance.onFireAttackKeyPress += FireAttack;
         GlobalEventManager.Instance.onMapChanged += UpdateGrid;
     }
 
@@ -50,6 +57,26 @@ public class PlayerAttack
         attackClick = true;
     }
 
+    public void FireAttack()
+    {
+        float xRotation = playerAnimator.GetFloat("moveX");
+        float yRotation = playerAnimator.GetFloat("moveY");
+        if (Inventory.instance.ContainsItemName("Fire Scroll") && Inventory.instance.actualMana >= _fireManaCost)
+        {
+            // Implement Fire attack
+            GlobalEventManager.Instance.DecreaseMana(_fireManaCost);
+            Inventory.instance.actualMana -= _fireManaCost;
+            InstantiatePrefab(xRotation,yRotation);
+        }
+    }
+
+    public void InstantiatePrefab(float xRotation, float yRotation)
+    {
+        GameObject newObject = prefab as GameObject;
+        PlayerFireAttack yourObject = newObject.GetComponent<PlayerFireAttack>();
+        yourObject.orientation = new Vector2(xRotation,yRotation);
+        GameObject.Instantiate(prefab, playerTransform.position, Quaternion.identity);
+    }
     private void UpdateGrid()
     {
         gl = MapController.currentMap.GetComponent<Grid>();
@@ -58,6 +85,7 @@ public class PlayerAttack
     ~PlayerAttack()
     {
         PressedKeyEventManager.Instance.onAttackKeyPress -= Attack;
+        PressedKeyEventManager.Instance.onFireAttackKeyPress -= FireAttack;
         GlobalEventManager.Instance.onMapChanged -= UpdateGrid;
     }
 }

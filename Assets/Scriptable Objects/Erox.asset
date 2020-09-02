@@ -16,3 +16,8 @@ MonoBehaviour:
   attackDamage: 1
   speed: 3
   runningSpeed: 4
+  mana: 2
+  fireManaCost: 2.5
+  waterManaCost: 2.5
+  rockManaCost: 2.5
+  windManaCost: 2.5

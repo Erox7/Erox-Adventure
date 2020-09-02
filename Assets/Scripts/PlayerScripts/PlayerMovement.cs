@@ -78,6 +78,10 @@ public class PlayerMovement
                     playerAnimator.SetFloat("moveY", vel.y);
                     playerTransform.Translate(movement);
                 } 
+                if (MapController.globalItemsPosition.Contains(cellPosition))
+                {
+                    GlobalEventManager.Instance.PickUpItem(cellPosition);
+                }
                 if (MapController.portals.ContainsKey(cellPosition))
                 {
                     GlobalEventManager.Instance.MapChange(MapController.portals[cellPosition]);

@@ -9,17 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2e9ba1aabe56c04ab5f11a98f665225, type: 3}
-  m_Name: GameConfiguration
+  m_Script: {fileID: 11500000, guid: 5ca57d5560527c54f928cad4b5d9c958, type: 3}
+  m_Name: WindScroll
   m_EditorClassIdentifier: 
-  moveUp: 119
-  moveDown: 115
-  moveRight: 100
-  moveLeft: 97
-  attack: 107
-  sprint: 304
-  inventory: 105
-  fireAttack: 108
-  waterAttack: 0
-  rockAttack: 0
-  windAttack: 0
+  itemName: Wind Scroll
+  isDefaultItem: 0
+  icon: {fileID: 0}

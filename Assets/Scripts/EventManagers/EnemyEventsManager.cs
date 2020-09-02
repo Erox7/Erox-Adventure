@@ -23,4 +23,11 @@ public class EnemyEventsManager : MonoBehaviour
     {
         onTakeDamage?.Invoke(playerOrientation, position);
     }
+
+    public event Action<Vector3> onTakeProjectileDamage;
+    public void TakeProjectileDamage(Vector3 position)
+    {
+        onTakeProjectileDamage?.Invoke(position);
+    }
+    
 }

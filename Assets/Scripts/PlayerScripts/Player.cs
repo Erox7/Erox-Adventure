@@ -16,7 +16,7 @@ namespace Player {
             playerMovement.SetPlayerSpeed(player.speed);
             playerMovement.SetActualSpeed(player.speed);
             playerMovement.SetRunningSpeed(player.runningSpeed);
-            playerAttack = new PlayerAttack(transform, GetComponent<Animator>());
+            playerAttack = new PlayerAttack(transform, GetComponent<Animator>(), player.fireManaCost, player.waterManaCost, player.windManaCost, player.rockManaCost);
             new WaitForEndOfFrame();
             StartCoroutine(playerMovement.Move());
             StartCoroutine(playerAttack.AttackAnimation());
