@@ -6,13 +6,13 @@ using UnityEditor.Animations;
 
 public class Enemy : MonoBehaviour
 {
-    public float hp;
-    public string enemyName;
-    public float attack;
-    public float speed;
-    public GridLayout gl;
+    public EnemySO enemySO;
+    public List<Vector3> movementPoints;
+    GridLayout gl;
+    private float hp;
     private Animator animator;
     private MoveBetweenPoints movement;
+    private Vector3Int lastPosition;
     // Start is called before the first frame update 
     void Start()
     {
@@ -21,21 +21,53 @@ public class Enemy : MonoBehaviour
         GlobalEventManager.Instance.onMapChanged += UpdateGrid;
         gl = MapController.currentMap.GetComponent<GridLayout>();
         animator = GetComponentInParent<Animator>();
-
-        movement = new MoveBetweenPoints(this.gameObject,
+        lastPosition = gl.WorldToCell(transform.position);
+        hp = enemySO.hp;
+        movement = new MoveBetweenPoints(gameObject,
         new List<Vector3>()
         {
             transform.position,
-            new Vector3(13.91f, 10.37f,0),
-            new Vector3(7.3f, 7.48f,0)
+            movementPoints[0],
+            movementPoints[1],
+            movementPoints[2]
         },
-        speed,
+        enemySO.speed,
         gl);
         
         //movement = new MoveToObject(this.gameObject, GameObject.FindWithTag("Player"), speed);
         StartCoroutine(movement.StartMoving());
     }
 
+    private void Update()
+    {
+        Vector3Int myGlobalPosition = gl.WorldToCell(transform.position);
+        if(myGlobalPosition != lastPosition)
+        {
+            EnemyEventsManager.Instance.MakeDamage(gl.WorldToCell(new Vector3(transform.position.x + 0.5f, transform.position.y - 0.5f, 0)), 
+                                                   enemySO.impactDamage,
+                                                   CalculateRotation(myGlobalPosition));
+            lastPosition = myGlobalPosition;
+        }
+    }
+
+    private Vector2 CalculateRotation(Vector3Int myGlobalPosition)
+    {
+        if(myGlobalPosition.x > lastPosition.x)
+        {
+            return new Vector2(2,0);
+        } else if (myGlobalPosition.x < lastPosition.x)
+        {
+            return new Vector2(-2, 0);
+        }
+        else if (myGlobalPosition.y > lastPosition.y)
+        {
+            return new Vector2(0, 2);
+        }
+        else 
+        {
+            return new Vector2(0, -2);
+        }
+    }
     public void TakeDamage(Vector2 playerOrientation, Vector3 attackedGlobalPosition)
     {
         // TODO: Deberia poder preguntarle al map manager que posicion global tengo
@@ -43,7 +75,7 @@ public class Enemy : MonoBehaviour
         // Si coincide con la que ataca el jugador tengo que pillar dmg bruh
 
         if (gl != null && gl != default) { 
-            Vector3 myGlobalPosition = gl.WorldToCell(this.gameObject.transform.position + new Vector3(0, -0.5f, 0));
+            Vector3 myGlobalPosition = gl.WorldToCell(gameObject.transform.position + new Vector3(0, -0.5f, 0));
         
             if (myGlobalPosition.Equals(attackedGlobalPosition) && !animator.GetBool("Death"))
             {
@@ -62,7 +94,7 @@ public class Enemy : MonoBehaviour
 
         if (gl != null && gl != default)
         {
-            Vector3 myGlobalPosition = gl.WorldToCell(this.gameObject.transform.position + new Vector3(0, -0.5f, 0));
+            Vector3 myGlobalPosition = gl.WorldToCell(gameObject.transform.position + new Vector3(0, -0.5f, 0));
 
             if (myGlobalPosition.Equals(attackedGlobalPosition) && !animator.GetBool("Death"))
             {

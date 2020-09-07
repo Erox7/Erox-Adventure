@@ -260,7 +260,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262007971}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.6, y: 21, z: 0}
+  m_LocalPosition: {x: -10.9, y: 11.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1970,11 +1970,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56d905a68fafa14daf6ac1bb4ab621c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 30
-  enemyName: Tronco
-  attack: 0.5
-  speed: 2
-  gl: {fileID: 1792682601152844719, guid: 6209e8d363ae10c4d85b189b4fec9262, type: 3}
+  enemySO: {fileID: 11400000, guid: 06cfc40842a78544fb6524c4063d6f2a, type: 2}
+  movementPoints:
+  - {x: 13.53, y: 11.668, z: 0}
+  - {x: 13.53, y: 7, z: 0}
+  - {x: 3.53, y: 7, z: 0}
 --- !u!95 &1476674552
 Animator:
   serializedVersion: 3
