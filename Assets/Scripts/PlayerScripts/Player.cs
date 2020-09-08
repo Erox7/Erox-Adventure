@@ -34,10 +34,13 @@ namespace Player {
             {
                 hp -= damage;
                 gameObject.transform.Translate(orientation);
-                Debug.Log("HP:" + hp);
                 if(hp <= 0)
                 {
+                    GlobalEventManager.Instance.DecreaseHp(hp + damage);
                     Lose();
+                } else
+                {
+                    GlobalEventManager.Instance.DecreaseHp(damage);
                 }
             }
         }

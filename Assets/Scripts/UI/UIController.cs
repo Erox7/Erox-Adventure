@@ -5,6 +5,7 @@ public class UIController : MonoBehaviour
     public Transform itemsParent;
     public GameObject inventoryUI;
     public Slider manaBar;
+    public Slider hpBar;
     public static bool gameIsPaused = false;
     Inventory inventory;
     InventorySlot[] slots;
@@ -18,6 +19,8 @@ public class UIController : MonoBehaviour
         PressedKeyEventManager.Instance.onInventoryKeyPress += TriggerInventory;
         GlobalEventManager.Instance.onManaDecrease += DecreaseMana;
         GlobalEventManager.Instance.onManaIncrease += IncreaseMana;
+        GlobalEventManager.Instance.onHpDecrease += DecreaseHp;
+        GlobalEventManager.Instance.onHpIncrease += IncreaseHp;
     }
     public void TriggerInventory()
     {
@@ -62,11 +65,22 @@ public class UIController : MonoBehaviour
     {
         manaBar.value -= mana;
     }
+
+    void IncreaseHp(float hp)
+    {
+        hpBar.value += hp;
+    }
+    void DecreaseHp(float hp)
+    {
+        hpBar.value -= hp;
+    }
     private void OnDestroy()
     {
         PressedKeyEventManager.Instance.onInventoryKeyPress -= TriggerInventory;
         inventory.onItemChangedCallback -= UpdateUI;
         GlobalEventManager.Instance.onManaDecrease -= DecreaseMana;
         GlobalEventManager.Instance.onManaIncrease -= IncreaseMana;
+        GlobalEventManager.Instance.onHpDecrease -= DecreaseHp;
+        GlobalEventManager.Instance.onHpIncrease -= IncreaseHp;
     }
 }

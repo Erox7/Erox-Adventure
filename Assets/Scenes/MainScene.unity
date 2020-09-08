@@ -1952,8 +1952,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476674548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.53, y: 11.668, z: 0}
-  m_LocalScale: {x: 0.83, y: 0.779371, z: 1}
+  m_LocalPosition: {x: 3.51, y: 10.62, z: 0}
+  m_LocalScale: {x: 0.6844546, y: 0.7001551, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -1972,9 +1972,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySO: {fileID: 11400000, guid: 06cfc40842a78544fb6524c4063d6f2a, type: 2}
   movementPoints:
-  - {x: 13.53, y: 11.668, z: 0}
-  - {x: 13.53, y: 7, z: 0}
-  - {x: 3.53, y: 7, z: 0}
+  - {x: 13.497, y: 10.497, z: 0}
+  - {x: 13.497, y: 7, z: 0}
+  - {x: 3.497, y: 7, z: 0}
 --- !u!95 &1476674552
 Animator:
   serializedVersion: 3
@@ -2859,12 +2859,12 @@ PrefabInstance:
     - target: {fileID: 1666577230289091276, guid: 25e5aa57878c97c48a70959ac6700b32,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.48
+      value: -6.493
       objectReference: {fileID: 0}
     - target: {fileID: 1666577230289091276, guid: 25e5aa57878c97c48a70959ac6700b32,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.487
+      value: 11.551
       objectReference: {fileID: 0}
     - target: {fileID: 1666577230289091276, guid: 25e5aa57878c97c48a70959ac6700b32,
         type: 3}
@@ -2910,6 +2910,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1666577230289091276, guid: 25e5aa57878c97c48a70959ac6700b32,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.33969757
+      objectReference: {fileID: 0}
+    - target: {fileID: 1666577230289091276, guid: 25e5aa57878c97c48a70959ac6700b32,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.33074167
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25e5aa57878c97c48a70959ac6700b32, type: 3}

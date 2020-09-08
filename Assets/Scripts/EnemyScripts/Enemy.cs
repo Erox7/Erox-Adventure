@@ -11,9 +11,8 @@ public class Enemy : MonoBehaviour
     GridLayout gl;
     private float hp;
     private Animator animator;
-    private MoveBetweenPoints movement;
     private Vector3Int lastPosition;
-    // Start is called before the first frame update 
+
     void Start()
     {
         EnemyEventsManager.Instance.onTakeDamage += TakeDamage;
@@ -22,22 +21,30 @@ public class Enemy : MonoBehaviour
         gl = MapController.currentMap.GetComponent<GridLayout>();
         animator = GetComponentInParent<Animator>();
         lastPosition = gl.WorldToCell(transform.position);
+        StartMovement();
         hp = enemySO.hp;
-        movement = new MoveBetweenPoints(gameObject,
-        new List<Vector3>()
-        {
-            transform.position,
-            movementPoints[0],
-            movementPoints[1],
-            movementPoints[2]
-        },
-        enemySO.speed,
-        gl);
-        
-        //movement = new MoveToObject(this.gameObject, GameObject.FindWithTag("Player"), speed);
-        StartCoroutine(movement.StartMoving());
     }
 
+    private void StartMovement()
+    {
+        //
+        if (enemySO.movementPattern.Equals(0))
+        {
+            movementPoints.Insert(0,transform.position);
+            MoveBetweenPoints movement = new MoveBetweenPoints(gameObject, movementPoints,
+            enemySO.speed,
+            gl);
+            StartCoroutine(movement.StartMoving());
+        }
+        else if (enemySO.movementPattern.Equals(1))
+        {
+            MoveToObject movement = new MoveToObject(this.gameObject, GameObject.FindWithTag("Player"), enemySO.speed);
+            StartCoroutine(movement.StartMoving());
+        } else if (enemySO.movementPattern.Equals(99))
+        {
+            //99 code is to not move
+        }
+    }
     private void Update()
     {
         Vector3Int myGlobalPosition = gl.WorldToCell(transform.position);
@@ -81,7 +88,6 @@ public class Enemy : MonoBehaviour
             {
                 loseHp();
                 gameObject.transform.Translate(playerOrientation);
-                // movement.updateMovement(transform.position);
             }
         }
     }
@@ -105,11 +111,12 @@ public class Enemy : MonoBehaviour
 
     private void loseHp()
     {
-        this.hp -= 0.5f;
-        if (this.hp <= 0)
+        hp -= 0.5f;
+        if (hp <= 0)
         {
             animator.SetBool("Death", true);
         }
+        Debug.Log(hp);
     }
     private void UpdateGrid()
     {
