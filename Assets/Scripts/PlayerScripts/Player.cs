@@ -14,7 +14,7 @@ namespace Player {
         void Start()
         {
             gl = MapController.currentMap.GetComponent<GridLayout>();
-            transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y - 0.5f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             playerMovement = new PlayerMovement(transform, GetComponent<Animator>());
             playerMovement.SetPlayerSpeed(player.speed);
             playerMovement.SetActualSpeed(player.speed);
