@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class UIController : MonoBehaviour
 {
     public Transform itemsParent;
     public GameObject inventoryUI;
+    public GameObject gameOverScreen;
+
     public Slider manaBar;
     public Slider hpBar;
     public static bool gameIsPaused = false;
@@ -21,6 +24,11 @@ public class UIController : MonoBehaviour
         GlobalEventManager.Instance.onManaIncrease += IncreaseMana;
         GlobalEventManager.Instance.onHpDecrease += DecreaseHp;
         GlobalEventManager.Instance.onHpIncrease += IncreaseHp;
+        GlobalEventManager.Instance.onGameOver += ActivateGOMenu;
+    }
+    public void ActivateGOMenu()
+    {
+        gameOverScreen.SetActive(true);
     }
     public void TriggerInventory()
     {
@@ -73,6 +81,11 @@ public class UIController : MonoBehaviour
     void DecreaseHp(float hp)
     {
         hpBar.value -= hp;
+    }
+
+    public void EndGame()
+    {
+        SceneManager.LoadScene("InitialMenuScene");
     }
     private void OnDestroy()
     {

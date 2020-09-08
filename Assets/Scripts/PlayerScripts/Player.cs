@@ -46,6 +46,9 @@ namespace Player {
         }
         private void Lose()
         {
+            transform.GetComponent<Animator>().SetBool("death", true);
+            Time.timeScale = 1f;
+            GlobalEventManager.Instance.GameOver();
             Debug.Log("You Lost");
         }
         private void UpdateGrid()

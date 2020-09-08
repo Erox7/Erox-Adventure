@@ -125,4 +125,13 @@ public class GlobalEventManager : MonoBehaviour
             onHpIncrease(increaseNumber);
         }
     }
+
+    public event Action onGameOver;
+    public void GameOver()
+    {
+        if (onGameOver != null)
+        {
+            onGameOver();
+        }
+    }
 }
