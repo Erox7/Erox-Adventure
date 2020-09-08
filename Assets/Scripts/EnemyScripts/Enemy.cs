@@ -24,10 +24,19 @@ public class Enemy : MonoBehaviour
         StartMovement();
         hp = enemySO.hp;
     }
-
+    void Update()
+    {
+        Vector3Int myGlobalPosition = gl.WorldToCell(transform.position);
+        if (myGlobalPosition != lastPosition)
+        {
+            EnemyEventsManager.Instance.MakeDamage(gl.WorldToCell(new Vector3(transform.position.x, transform.position.y, 0)),
+                                                   enemySO.impactDamage,
+                                                   CalculateRotation(myGlobalPosition));
+            lastPosition = myGlobalPosition;
+        }
+    }
     private void StartMovement()
     {
-        //
         if (enemySO.movementPattern.Equals(0))
         {
             movementPoints.Insert(0,transform.position);
@@ -43,17 +52,6 @@ public class Enemy : MonoBehaviour
         } else if (enemySO.movementPattern.Equals(99))
         {
             //99 code is to not move
-        }
-    }
-    private void Update()
-    {
-        Vector3Int myGlobalPosition = gl.WorldToCell(transform.position);
-        if(myGlobalPosition != lastPosition)
-        {
-            EnemyEventsManager.Instance.MakeDamage(gl.WorldToCell(new Vector3(transform.position.x + 0.5f, transform.position.y - 0.5f, 0)), 
-                                                   enemySO.impactDamage,
-                                                   CalculateRotation(myGlobalPosition));
-            lastPosition = myGlobalPosition;
         }
     }
 
@@ -125,6 +123,7 @@ public class Enemy : MonoBehaviour
     private void OnDestroy()
     {
         EnemyEventsManager.Instance.onTakeDamage -= TakeDamage;
-        GlobalEventManager.Instance.onMapChanged -= UpdateGrid;
+        GlobalEventManager.Instance.onMapChanged -= UpdateGrid; 
+        EnemyEventsManager.Instance.onTakeProjectileDamage -= TakeProjectileDamage;
     }
 }
