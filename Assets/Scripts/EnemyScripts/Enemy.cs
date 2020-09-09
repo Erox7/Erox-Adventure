@@ -26,10 +26,10 @@ public class Enemy : MonoBehaviour
     }
     void Update()
     {
-        Vector3Int myGlobalPosition = gl.WorldToCell(transform.position);
+        Vector3Int myGlobalPosition = gl.WorldToCell(new Vector3(transform.position.x, transform.position.y, 0));
         if (myGlobalPosition != lastPosition)
         {
-            EnemyEventsManager.Instance.MakeDamage(gl.WorldToCell(new Vector3(transform.position.x, transform.position.y, 0)),
+            EnemyEventsManager.Instance.MakeDamage(myGlobalPosition,
                                                    enemySO.impactDamage,
                                                    CalculateRotation(myGlobalPosition));
             lastPosition = myGlobalPosition;
@@ -41,13 +41,12 @@ public class Enemy : MonoBehaviour
         {
             movementPoints.Insert(0,transform.position);
             MoveBetweenPoints movement = new MoveBetweenPoints(gameObject, movementPoints,
-            enemySO.speed,
-            gl);
+            enemySO.speed);
             StartCoroutine(movement.StartMoving());
         }
         else if (enemySO.movementPattern.Equals(1))
         {
-            MoveToObject movement = new MoveToObject(this.gameObject, GameObject.FindWithTag("Player"), enemySO.speed);
+            MoveToObject movement = new MoveToObject(gameObject, GameObject.FindWithTag("Player"), enemySO.speed);
             StartCoroutine(movement.StartMoving());
         } else if (enemySO.movementPattern.Equals(99))
         {

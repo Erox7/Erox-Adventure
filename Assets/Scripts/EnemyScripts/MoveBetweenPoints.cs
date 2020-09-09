@@ -7,53 +7,77 @@ public class MoveBetweenPoints
     public GameObject _go;
     public List<Vector3> _wayPoints;
     public float _speed;
-    public GridLayout _gl;
     public Vector3 movement;
 
-    private int _nextPoint;
+    private int _nextPointCounter;
 
-    public MoveBetweenPoints(GameObject go, List<Vector3> points, float speed, GridLayout gl)
+    public MoveBetweenPoints(GameObject go, List<Vector3> points, float speed)
     {
         _go = go;
         _wayPoints = points;
         _speed = speed;
-        _gl = gl;
-        _nextPoint = 1;
+        _nextPointCounter = 1;
     }
 
     public IEnumerator StartMoving()
     {
-        Vector3Int myGlobalPosition = _gl.WorldToCell(_go.transform.position);
-        Vector3Int nextPoint = _gl.WorldToCell(_wayPoints[_nextPoint]);
-        movement = nextPoint - myGlobalPosition;
+        Vector3 myPosition = _go.transform.position;
+        Vector3 nextPoint = _wayPoints[_nextPointCounter];
+        movement = nextPoint - myPosition;
         while (true)
         {
-            if (haveEqualValues(myGlobalPosition, nextPoint))
+            if (haveEqualValues3(myPosition, nextPoint))
             {
-                if(_nextPoint + 1 >= _wayPoints.Count)
+                if(_nextPointCounter + 1 >= _wayPoints.Count)
                 {
-                    _nextPoint = 0;
+                    _nextPointCounter = 0;
                 } else
                 {
-                    _nextPoint++;
+                    _nextPointCounter++;
                 }
-                myGlobalPosition = _gl.WorldToCell(_go.transform.position);
-                nextPoint = _gl.WorldToCell(_wayPoints[_nextPoint]);
-                movement = nextPoint - myGlobalPosition;
+                _go.transform.position = nextPoint;
+                myPosition = _go.transform.position;
+                nextPoint = _wayPoints[_nextPointCounter];
+                movement = nextPoint - myPosition;
+                _go.transform.Translate(movement.normalized * _speed * Time.deltaTime);
             } else
             {
-                movement = nextPoint - myGlobalPosition;
+                movement = nextPoint - myPosition;
                 _go.transform.Translate(movement.normalized * _speed * Time.deltaTime);
-                myGlobalPosition = _gl.WorldToCell(_go.transform.position);
+                myPosition = _go.transform.position;
             }
             yield return new WaitForEndOfFrame();
         }
     }
 
-    public bool haveEqualValues(Vector3Int vector1, Vector3Int vector2)
+    public bool haveEqualValues(Vector3 vector1, Vector3 vector2)
     {
-        if (vector1.x.Equals(vector2.x) && vector1.y.Equals(vector2.y) && vector1.z.Equals(vector2.z))
+        if (vector1.x.Equals(vector2.x) && vector1.y.Equals(vector2.y) && vector1.z.Equals(vector2.z)) {
+            return true;
+        }
+        return false;
+    }
+
+    public bool haveEqualValues2(Vector3 vector1, Vector3 vector2)
+    {
+        if ((vector1.x.Equals(vector2.x) || Mathf.Abs(vector1.x).CompareTo(Mathf.Abs(vector2.x)) > 0)
+            && (vector1.y.Equals(vector2.y) || Mathf.Abs(vector1.y).CompareTo(Mathf.Abs(vector2.y)) > 0)
+            && (vector1.z.Equals(vector2.z) || Mathf.Abs(vector1.z).CompareTo(Mathf.Abs(vector2.z)) > 0))
             return true;
         return false;
+    }
+
+    public bool haveEqualValues3(Vector3 vector1, Vector3 vector2)
+    {
+        if (IsWithin(vector1.x, vector2.x-0.1f, vector2.x+0.1f)
+            && IsWithin(vector1.y, vector2.y - 0.1f, vector2.y + 0.1f)
+            && IsWithin(vector1.z, vector2.z - 0.1f, vector2.z + 0.1f))
+            return true;
+        return false;
+    }
+
+    public bool IsWithin(float value, float minimum, float maximum)
+    {
+        return value >= minimum && value <= maximum;
     }
 }

@@ -28,6 +28,7 @@ public class UIController : MonoBehaviour
     }
     public void ActivateGOMenu()
     {
+        Pause();
         gameOverScreen.SetActive(true);
     }
     public void TriggerInventory()
