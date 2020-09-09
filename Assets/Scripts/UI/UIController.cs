@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class UIController : MonoBehaviour
 {
     public Transform itemsParent;
     public GameObject inventoryUI;
+    public GameObject gameOverScreen;
+
     public Slider manaBar;
+    public Slider hpBar;
     public static bool gameIsPaused = false;
     Inventory inventory;
     InventorySlot[] slots;
@@ -18,6 +22,14 @@ public class UIController : MonoBehaviour
         PressedKeyEventManager.Instance.onInventoryKeyPress += TriggerInventory;
         GlobalEventManager.Instance.onManaDecrease += DecreaseMana;
         GlobalEventManager.Instance.onManaIncrease += IncreaseMana;
+        GlobalEventManager.Instance.onHpDecrease += DecreaseHp;
+        GlobalEventManager.Instance.onHpIncrease += IncreaseHp;
+        GlobalEventManager.Instance.onGameOver += ActivateGOMenu;
+    }
+    public void ActivateGOMenu()
+    {
+        Pause();
+        gameOverScreen.SetActive(true);
     }
     public void TriggerInventory()
     {
@@ -62,11 +74,27 @@ public class UIController : MonoBehaviour
     {
         manaBar.value -= mana;
     }
+
+    void IncreaseHp(float hp)
+    {
+        hpBar.value += hp;
+    }
+    void DecreaseHp(float hp)
+    {
+        hpBar.value -= hp;
+    }
+
+    public void EndGame()
+    {
+        SceneManager.LoadScene("InitialMenuScene");
+    }
     private void OnDestroy()
     {
         PressedKeyEventManager.Instance.onInventoryKeyPress -= TriggerInventory;
         inventory.onItemChangedCallback -= UpdateUI;
         GlobalEventManager.Instance.onManaDecrease -= DecreaseMana;
         GlobalEventManager.Instance.onManaIncrease -= IncreaseMana;
+        GlobalEventManager.Instance.onHpDecrease -= DecreaseHp;
+        GlobalEventManager.Instance.onHpIncrease -= IncreaseHp;
     }
 }

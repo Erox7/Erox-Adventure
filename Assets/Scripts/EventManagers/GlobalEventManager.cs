@@ -107,4 +107,31 @@ public class GlobalEventManager : MonoBehaviour
             onManaIncrease(increaseNumber);
         }
     }
+
+    public event Action<float> onHpDecrease;
+    public void DecreaseHp(float decreaseNumber)
+    {
+        if (onHpDecrease != null)
+        {
+            onHpDecrease(decreaseNumber);
+        }
+    }
+
+    public event Action<float> onHpIncrease;
+    public void IncreaseHp(float increaseNumber)
+    {
+        if (onHpIncrease != null)
+        {
+            onHpIncrease(increaseNumber);
+        }
+    }
+
+    public event Action onGameOver;
+    public void GameOver()
+    {
+        if (onGameOver != null)
+        {
+            onGameOver();
+        }
+    }
 }
