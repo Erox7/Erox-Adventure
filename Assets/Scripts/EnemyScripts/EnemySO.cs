@@ -10,4 +10,7 @@ public class EnemySO : ScriptableObject
     public float impactDamage = default;
     public float skillDamage = default;
     public int movementPattern = default;
+    public int attackPattern = default;
+    public bool isInvulnerable = default;
+    public float attackDistance = default;
 }

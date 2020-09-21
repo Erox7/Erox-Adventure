@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     private float hp;
     private Animator animator;
     private Vector3Int lastPosition;
+    private bool isInvulnerable;
 
     void Start()
     {
@@ -22,7 +23,9 @@ public class Enemy : MonoBehaviour
         animator = GetComponentInParent<Animator>();
         lastPosition = gl.WorldToCell(transform.position);
         StartMovement();
+        StartAttacking();
         hp = enemySO.hp;
+        isInvulnerable = enemySO.isInvulnerable;
     }
     void Update()
     {
@@ -53,7 +56,15 @@ public class Enemy : MonoBehaviour
             //99 code is to not move
         }
     }
-
+    private void StartAttacking()
+    {
+        if (enemySO.attackPattern.Equals(1))
+        {
+            //Tower Attack pattern
+            EnemyTowerAttack attack = new EnemyTowerAttack(gameObject, GameObject.FindWithTag("Player"), enemySO);
+            StartCoroutine(attack.StartAttacking());
+        }
+    }
     private Vector2 CalculateRotation(Vector3Int myGlobalPosition)
     {
         if(myGlobalPosition.x > lastPosition.x)
@@ -79,7 +90,7 @@ public class Enemy : MonoBehaviour
         // Si coincide con la que ataca el jugador tengo que pillar dmg bruh
 
         if (gl != null && gl != default) { 
-            Vector3 myGlobalPosition = gl.WorldToCell(gameObject.transform.position + new Vector3(0, -0.5f, 0));
+            Vector3 myGlobalPosition = gl.WorldToCell(gameObject.transform.position);
         
             if (myGlobalPosition.Equals(attackedGlobalPosition) && !animator.GetBool("Death"))
             {
@@ -97,9 +108,9 @@ public class Enemy : MonoBehaviour
 
         if (gl != null && gl != default)
         {
-            Vector3 myGlobalPosition = gl.WorldToCell(gameObject.transform.position + new Vector3(0, -0.5f, 0));
+            Vector3 myGlobalPosition = gl.WorldToCell(gameObject.transform.position);
 
-            if (myGlobalPosition.Equals(attackedGlobalPosition) && !animator.GetBool("Death"))
+            if (myGlobalPosition.Equals(attackedGlobalPosition) && !isInvulnerable && !animator.GetBool("Death"))
             {
                 loseHp();
             }

@@ -10,21 +10,21 @@ namespace Player {
         public PlayerAttack playerAttack;
         GridLayout gl;
         float hp;
-        // Start is called before the first frame update
+
         void Start()
         {
             gl = MapController.currentMap.GetComponent<GridLayout>();
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-            playerMovement = new PlayerMovement(transform, GetComponent<Animator>());
+            playerMovement = new PlayerMovement(transform, GetComponent<Animator>(), gl);
             playerMovement.SetPlayerSpeed(player.speed);
             playerMovement.SetActualSpeed(player.speed);
             playerMovement.SetRunningSpeed(player.runningSpeed);
-            playerAttack = new PlayerAttack(transform, GetComponent<Animator>(), player.fireManaCost, player.waterManaCost, player.windManaCost, player.rockManaCost);
+            playerAttack = new PlayerAttack(transform, GetComponent<Animator>(), player ,gl);
             new WaitForEndOfFrame();
             hp = player.hp;
             StartCoroutine(playerMovement.Move());
             StartCoroutine(playerAttack.AttackAnimation());
             EnemyEventsManager.Instance.onMakeDamage += TakeDamage;
+            EnemyEventsManager.Instance.onMakeProjectileDamage += TakeBulletDamage;
             GlobalEventManager.Instance.onMapChanged += UpdateGrid;
         }
         
@@ -39,6 +39,23 @@ namespace Player {
                     GlobalEventManager.Instance.DecreaseHp(hp + damage);
                     Lose();
                 } else
+                {
+                    GlobalEventManager.Instance.DecreaseHp(damage);
+                }
+            }
+        }
+
+        public void TakeBulletDamage(Vector3Int position, float damage)
+        {
+            if (position.Equals(gl.WorldToCell(transform.position)))
+            {
+                hp -= damage;
+                if (hp <= 0)
+                {
+                    GlobalEventManager.Instance.DecreaseHp(hp + damage);
+                    Lose();
+                }
+                else
                 {
                     GlobalEventManager.Instance.DecreaseHp(damage);
                 }
@@ -59,6 +76,7 @@ namespace Player {
         private void OnDestroy()
         {
             EnemyEventsManager.Instance.onMakeDamage -= TakeDamage;
+            EnemyEventsManager.Instance.onMakeProjectileDamage -= TakeBulletDamage;
             GlobalEventManager.Instance.onMapChanged -= UpdateGrid;
         }
     }

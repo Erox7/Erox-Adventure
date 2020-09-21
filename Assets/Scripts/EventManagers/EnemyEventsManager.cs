@@ -35,4 +35,10 @@ public class EnemyEventsManager : MonoBehaviour
     {
         onMakeDamage?.Invoke(position, damage, orientation);
     }
+
+    public event Action<Vector3Int, float> onMakeProjectileDamage;
+    public void MakeProjectileDamage(Vector3Int position, float damage)
+    {
+        onMakeProjectileDamage?.Invoke(position, damage);
+    }
 }

@@ -14,9 +14,12 @@ public class MapController : MonoBehaviour
 
     public List<GameObject> maps;
 
-    public void Start()
+    public void Awake()
     {
         ChargeNewMap(0);
+    }
+    public void Start()
+    {
         CalculateRealItemsPosition();
         GlobalEventManager.Instance.onPickUpItem += DeleteItemPosition;
         GlobalEventManager.Instance.onEnablePosition += NewValidPosition;
@@ -58,9 +61,11 @@ public class MapController : MonoBehaviour
         GameObject go = maps[mapId];
         if (go != null || go != default)
         {
-            player.transform.position = go.GetComponent<Map>().initialCharacterPosition;
+            if (player.transform != null) { 
+                player.transform.position = go.GetComponent<Map>().initialCharacterPosition;
+            }
         }
-        if (currentMap != null || currentMap != default)
+        if ((currentMap != null || currentMap != default) && currentMap.name != go.name)
         {
             Destroy(currentMap);
         }

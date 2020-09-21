@@ -23,7 +23,7 @@ public class PlayerMovement
         Right
     }
     public PlayerMovement() { }
-    public PlayerMovement(Transform pTransform, Animator pAnimator)
+    public PlayerMovement(Transform pTransform, Animator pAnimator, GridLayout map)
     {
         upClickEnd = true;
         downClickEnd = true;
@@ -33,6 +33,7 @@ public class PlayerMovement
         movement = new Vector3();
         playerTransform = pTransform;
         playerAnimator = pAnimator;
+        gl = map;
         PressedKeyEventManager.Instance.onUpKeyPress += MoveUp;
         PressedKeyEventManager.Instance.onDownKeyPress += MoveDown;
         PressedKeyEventManager.Instance.onLeftKeyPress += MoveLeft;

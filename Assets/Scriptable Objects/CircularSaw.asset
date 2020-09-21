@@ -9,9 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ca57d5560527c54f928cad4b5d9c958, type: 3}
-  m_Name: Bow
+  m_Script: {fileID: 11500000, guid: 04edeba36fe03a44f9c702767b8a2a96, type: 3}
+  m_Name: CircularSaw
   m_EditorClassIdentifier: 
-  itemName: Fire Scroll
-  isConsumable: 0
-  icon: {fileID: 2781102041769336136, guid: 5a170a12b1c04db4694ed98d16453c17, type: 3}
+  hp: 1e+23
+  enemyName: Circular saw
+  speed: 3
+  impactDamage: 0.5
+  skillDamage: 0
+  movementPattern: 0
+  attackPattern: 0
+  isInvulnerable: 1

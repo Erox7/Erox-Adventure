@@ -11,6 +11,8 @@ public class CameraMovementController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        map = MapController.currentMap;
+        calculateCameraLimits();
         GlobalEventManager.Instance.onMapChanged += UpdateMap;
     }
 

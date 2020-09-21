@@ -13,15 +13,16 @@ public class PlayerAttack
 
 
     public PlayerAttack() { }
-    public PlayerAttack(Transform pTransform, Animator pAnimator, float fireManaCost, float waterManaCost, float windManaCost, float rockManaCost)
+    public PlayerAttack(Transform pTransform, Animator pAnimator, PlayerSO player, GridLayout map)
     {
         attackClick = false;
         playerTransform = pTransform;
         playerAnimator = pAnimator;
-        _fireManaCost = fireManaCost;
-        _waterManaCost = waterManaCost;
-        _rockManaCost = rockManaCost;
-        _windManaCost = windManaCost;
+        _fireManaCost = player.fireManaCost;
+        _waterManaCost = player.waterManaCost;
+        _rockManaCost = player.windManaCost;
+        _windManaCost = player.rockManaCost;
+        gl = map;
         PressedKeyEventManager.Instance.onAttackKeyPress += Attack;
         PressedKeyEventManager.Instance.onFireAttackKeyPress += FireAttack;
         GlobalEventManager.Instance.onMapChanged += UpdateGrid;
@@ -52,7 +53,7 @@ public class PlayerAttack
         float yRotation = playerAnimator.GetFloat("moveY");
 
         Vector3 attackPosition = new Vector3(xRotation, yRotation, playerTransform.position.z);
-        Vector3Int attackCell = gl.WorldToCell(playerTransform.position + attackPosition + new Vector3(0, -0.5f, 0));
+        Vector3Int attackCell = gl.WorldToCell(playerTransform.position + attackPosition);
         EnemyEventsManager.Instance.TakeDamage(new Vector2(xRotation, yRotation), attackCell);
         attackClick = true;
     }

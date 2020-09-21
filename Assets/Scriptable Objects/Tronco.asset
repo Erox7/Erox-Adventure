@@ -16,5 +16,8 @@ MonoBehaviour:
   enemyName: Tronco
   speed: 2
   impactDamage: 0.5
-  skillDamage: 2
-  movementPattern: 0
+  skillDamage: 0.5
+  movementPattern: 99
+  attackPattern: 1
+  isInvulnerable: 0
+  attackDistance: 10
