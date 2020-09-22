@@ -16,6 +16,9 @@ public class EnemyBulletAttack : MonoBehaviour
         GlobalEventManager.Instance.onMapChanged += UpdateMap;
         currentMap = MapController.currentMap.GetComponent<GridLayout>();
         lastWorldPosition = currentMap.WorldToCell(transform.position);
+        movement = bulletObjective - transform.position;
+        bulletObjective.x = bulletObjective.x + movement.x * 10;
+        bulletObjective.y = bulletObjective.y + movement.y * 10;
     }
 
     public void UpdateMap()
