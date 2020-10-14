@@ -22,8 +22,9 @@ public class Enemy : MonoBehaviour
         gl = MapController.currentMap.GetComponent<GridLayout>();
         animator = GetComponentInParent<Animator>();
         lastPosition = gl.WorldToCell(transform.position);
-        StartMovement();
-        StartAttacking();
+        GameObject player = GameObject.FindWithTag("Player");
+        StartMovement(player);
+        StartAttacking(player);
         hp = enemySO.hp;
         isInvulnerable = enemySO.isInvulnerable;
     }
@@ -38,7 +39,7 @@ public class Enemy : MonoBehaviour
             lastPosition = myGlobalPosition;
         }
     }
-    private void StartMovement()
+    private void StartMovement(GameObject player)
     {
         if (enemySO.movementPattern.Equals(0))
         {
@@ -49,20 +50,24 @@ public class Enemy : MonoBehaviour
         }
         else if (enemySO.movementPattern.Equals(1))
         {
-            MoveToObject movement = new MoveToObject(gameObject, GameObject.FindWithTag("Player"), enemySO.speed);
+            MoveToObject movement = new MoveToObject(gameObject,player, enemySO.speed, enemySO.attackDistance);
             StartCoroutine(movement.StartMoving());
         } else if (enemySO.movementPattern.Equals(99))
         {
             //99 code is to not move
         }
     }
-    private void StartAttacking()
+    private void StartAttacking(GameObject player)
     {
         if (enemySO.attackPattern.Equals(1))
         {
             //Tower Attack pattern
-            EnemyTowerAttack attack = new EnemyTowerAttack(gameObject, GameObject.FindWithTag("Player"), enemySO);
+            EnemyTowerAttack attack = new EnemyTowerAttack(gameObject, player, enemySO);
             StartCoroutine(attack.StartAttacking());
+        } else if (enemySO.attackPattern.Equals(2))
+        {
+            //Exploding attack pattern
+
         }
     }
     private Vector2 CalculateRotation(Vector3Int myGlobalPosition)

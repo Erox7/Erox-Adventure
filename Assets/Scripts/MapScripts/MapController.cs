@@ -69,6 +69,7 @@ public class MapController : MonoBehaviour
         {
             Destroy(currentMap);
         }
+        // should reset the invalid and portal positions.
         currentMap = go;
         Instantiate(currentMap);
         GlobalEventManager.Instance.MapChanged();

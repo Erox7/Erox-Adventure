@@ -12,12 +12,6 @@ public class PickUpItem : MonoBehaviour
         GlobalEventManager.Instance.onPickUpItem += PickUp;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void PickUp(Vector3Int position)
     {
         if (position.Equals(MapController.currentMap.GetComponent<Grid>().WorldToCell(transform.position)))

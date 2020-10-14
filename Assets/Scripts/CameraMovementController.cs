@@ -50,7 +50,6 @@ public class CameraMovementController : MonoBehaviour
             minPosition = new Vector2(min.x + xCellsLimit, min.y + yCellsLimit);
             if (tileMapSize.x < halfWidth * 2)
             {
-                // TODO: SET MAX Y MIN DE LA X A LA MITAD.
                 maxPosition.x = min.x + ((max.x - min.x)/2);
                 minPosition.x = min.x + ((max.x - min.x)/2);
             } else
@@ -60,7 +59,6 @@ public class CameraMovementController : MonoBehaviour
             }
             if (tileMapSize.y < halfHeight * 2)
             {
-                // TODO: SET MAX Y MIN DE LA Y A LA MITAD.
                 maxPosition.y = min.y + ((max.y - min.y)/2);
                 minPosition.y = min.y + ((max.y - min.y)/2);
             } else
