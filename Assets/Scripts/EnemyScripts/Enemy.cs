@@ -67,7 +67,8 @@ public class Enemy : MonoBehaviour
         } else if (enemySO.attackPattern.Equals(2))
         {
             //Exploding attack pattern
-
+            ExplodeAttack attack = new ExplodeAttack(gameObject,player, enemySO, gl);
+            StartCoroutine(attack.StartAttacking());
         }
     }
     private Vector2 CalculateRotation(Vector3Int myGlobalPosition)

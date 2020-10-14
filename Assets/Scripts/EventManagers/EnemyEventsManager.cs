@@ -36,6 +36,12 @@ public class EnemyEventsManager : MonoBehaviour
         onMakeDamage?.Invoke(position, damage, orientation);
     }
 
+    public event Action<Vector3, float> onMakeDamageNoKnockBack;
+    public void MakeDamageNoKnockBack(Vector3 position, float damage)
+    {
+        onMakeDamageNoKnockBack?.Invoke(position, damage);
+    }
+
     public event Action<Vector3Int, float> onMakeProjectileDamage;
     public void MakeProjectileDamage(Vector3Int position, float damage)
     {

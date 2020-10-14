@@ -24,6 +24,7 @@ namespace Player {
             StartCoroutine(playerMovement.Move());
             StartCoroutine(playerAttack.AttackAnimation());
             EnemyEventsManager.Instance.onMakeDamage += TakeDamage;
+            EnemyEventsManager.Instance.onMakeDamageNoKnockBack += TakeDamageNoKnockBack;
             EnemyEventsManager.Instance.onMakeProjectileDamage += TakeBulletDamage;
             GlobalEventManager.Instance.onMapChanged += UpdateGrid;
         }
@@ -44,7 +45,22 @@ namespace Player {
                 }
             }
         }
-
+        public void TakeDamageNoKnockBack(Vector3 position, float damage)
+        {
+            if (gl.WorldToCell(position).Equals(gl.WorldToCell(transform.position)))
+            {
+                hp -= damage;
+                if (hp <= 0)
+                {
+                    GlobalEventManager.Instance.DecreaseHp(hp + damage);
+                    Lose();
+                }
+                else
+                {
+                    GlobalEventManager.Instance.DecreaseHp(damage);
+                }
+            }
+        }
         public void TakeBulletDamage(Vector3Int position, float damage)
         {
             if (position.Equals(gl.WorldToCell(transform.position)))
@@ -76,6 +92,7 @@ namespace Player {
         private void OnDestroy()
         {
             EnemyEventsManager.Instance.onMakeDamage -= TakeDamage;
+            EnemyEventsManager.Instance.onMakeDamageNoKnockBack -= TakeDamageNoKnockBack;
             EnemyEventsManager.Instance.onMakeProjectileDamage -= TakeBulletDamage;
             GlobalEventManager.Instance.onMapChanged -= UpdateGrid;
         }
